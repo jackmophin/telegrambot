@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Telegram Web App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f4f4f9;
+            color: #333;
+            padding: 20px;
+        }
+        .avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 20%;
+            margin: 20px auto;
+            border: 2px solid #ccc;
+        }
+        .info {
+            margin-top: 20px;
+        }
+        .item-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #fff;
+        }
+        .item-name {
+            font-size: 18px;
+        }
+        .quantity-control {
+            display: flex;
+            align-items: center;
+        }
+        .quantity-control button {
+            font-size: 18px;
+            padding: 5px 10px;
+            margin: 0 5px;
+            cursor: pointer;
+        }
+        .price {
+            font-size: 16px;
+        }
+        .total-cost {
+            font-size: 20px;
+            margin-top: 20px;
+        }
+        .pay-button {
+            padding: 10px 20px;
+            font-size: 18px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        .pay-button:hover {
+            background-color: #45a049;
+        }
+        .money-info {
+            margin-top: 30px;
+            font-size: 18px;
+        }
+        .subtract-line {
+            border-top: 2px solid #000;
+            margin: 10px 0;
+            width: 60%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .remaining-amount {
+            font-size: 20px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Добро пожаловать!</h1>
+    <img id="avatar" class="avatar" src="" alt="User Avatar">
+    <div class="info">
+        <h2 id="name">Имя пользователя</h2>
+        <p id="username">@username</p>
+    </div>
+
+    <div id="item-list">
+        <div class="item-container" data-price="1000" id="item-1">
+            <div class="item-name">Жилой дом</div>
+            <div class="quantity-control">
+                <button class="decrease">-</button>
+                <span id="quantity-1">0</span>
+                <button class="increase">+</button>
+            </div>
+            <div class="price">Цена: <span id="price-1">1000</span> ₽</div>
+        </div>
+
+        <div class="item-container" data-price="5000" id="item-2">
+            <div class="item-name">Жилой комплекс</div>
+            <div class="quantity-control">
+                <button class="decrease">-</button>
+                <span id="quantity-2">0</span>
+                <button class="increase">+</button>
+            </div>
+            <div class="price">Цена: <span id="price-2">5000</span> ₽</div>
+        </div>
+
+        <div class="item-container" data-price="1500" id="item-3">
+            <div class="item-name">Водопровод</div>
+            <div class="quantity-control">
+                <button class="decrease">-</button>
+                <span id="quantity-3">0</span>
+                <button class="increase">+</button>
+            </div>
+            <div class="price">Цена: <span id="price-3">1500</span> ₽</div>
+        </div>
+
+        <div class="item-container" data-price="50000" id="item-4">
+            <div class="item-name">Електростанция</div>
+            <div class="quantity-control">
+                <button class="decrease">-</button>
+                <span id="quantity-4">0</span>
+                <button class="increase">+</button>
+            </div>
+            <div class="price">Цена: <span id="price-4">50000</span> ₽</div>
+        </div>
+    </div>
+
+    <div class="money-info">
+        <p>Текущий баланс: <span id="user-money">0</span> ₽</p>
+        <div class="subtract-line"></div>
+        <p>После покупки: <span id="remaining-money">0</span> ₽</p>
+    </div>
+
+    <div class="total-cost">
+        Общая стоимость: <span id="total-cost">0</span> ₽
+    </div>
+
+    <button class="pay-button" id="pay-button" onclick="pay()">Оплатить</button>
+
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script>
+        let user;
+
+        // Проверяем, если приложение не используется в Telegram Web App, создаём тестового пользователя
+        if (false) {
+            localStorage.setItem('userMoney', 999999999999999999);
+            user = {
+                first_name: "Пр<br>",
+                last_name: "Ваши транзакции не записываются<br>Это тестовый аккаунт",
+                username: "РА",
+                photo_url: 'https://masterpiecer-images.s3.yandex.net/5fb594277c19885:upscaled'
+            };
+        } else {
+            Telegram.WebApp.ready();
+            user = Telegram.WebApp.initDataUnsafe.user;
+        }
+
+        // Устанавливаем данные пользователя
+        document.getElementById('avatar').src = user.photo_url || 'https://via.placeholder.com/100';
+        document.getElementById('name').innerHTML = user.first_name + (user.last_name ? ' ' + user.last_name : '');
+        document.getElementById('username').innerText = '@' + (user.username || 'unknown');
+        
+        const users = {
+            '!тест!': { money: 9999999999999 },
+            'Stem_n': { money: 9000000 },
+            'Coal_Coa': { money: 14000000 },
+            'Spamton1997years': { money: 5500000 },
+            'imancat': { money: 18000000 },
+            'MaxMine39': { money: 11000000 },
+            'Korsik51': { money: 7000000 },
+            'Ares_Super0': { money: 3500000 },
+            'DongMaoZeDong': { money: 350000000 }
+        };
+
+        // Устанавливаем баланс текущего пользователя
+        const currentUserMoney = users[user.username] ? users[user.username].money : 1;
+        let totalCost = 0;
+        let remainingMoney = currentUserMoney;
+
+        // Сохраняем начальный баланс в localStorage
+        if (!localStorage.getItem('userMoney')) {
+            localStorage.setItem('userMoney', currentUserMoney);
+        } else {
+            remainingMoney = parseInt(localStorage.getItem('userMoney'));
+        }
+
+        // Функции увеличения и уменьшения количества товара
+        function updateTotalCost() {
+    totalCost = 0;
+    let boughtItems = ''; // Строка для хранения купленных товаров
+
+    const itemContainers = document.querySelectorAll('.item-container');
+    itemContainers.forEach(item => {
+        const quantity = parseInt(item.querySelector('span').innerText);
+        const price = parseInt(item.getAttribute('data-price'));
+        const itemName = item.querySelector('.item-name').innerText;
+        
+        if (quantity > 0) {
+            boughtItems += `${itemName} × ${quantity}\n`; // Добавляем товар и его количество
+        }
+        
+        totalCost += quantity * price;
+    });
+
+    if (boughtItems !== '') {
+        let items = boughtItems.split('\n').length - 1
+        let tovar = (items === 1) ? ' товар' : (items >= 2 && items <= 4) ? ' товара' : ' товаров';
+        boughtItems += '-------\nВсего: ' + items + tovar; // Добавляем количество товаров
+    }
+
+    document.getElementById('total-cost').innerText = totalCost;
+    document.getElementById('remaining-money').innerText = remainingMoney - totalCost;
+
+    return boughtItems;
+}
+
+        document.querySelectorAll('.increase').forEach(button => {
+            button.addEventListener('click', function() {
+                const quantitySpan = this.parentElement.querySelector('span');
+                let quantity = parseInt(quantitySpan.innerText);
+                quantitySpan.innerText = quantity + 1;
+                updateTotalCost();
+            });
+        });
+
+        document.querySelectorAll('.decrease').forEach(button => {
+            button.addEventListener('click', function() {
+                const quantitySpan = this.parentElement.querySelector('span');
+                let quantity = parseInt(quantitySpan.innerText);
+                if (quantity > 0) {
+                    quantitySpan.innerText = quantity - 1;
+                    updateTotalCost();
+                }
+            });
+        });
+
+        function sendItem(cost, remain, bought) {
+    fetch('https://api.telegram.org/bot8048208715:AAHfwiObbcpXzdHfY62_gKzYdazVpsTb5GQ/sendMessage', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            chat_id: '-1002450575103',
+            text: `💱 ${cost}₽ \nПользователь: ${user.username}\nОсталось: ${remain}\n\nКуплено:\n-------\n${bought}`, 
+            message_thread_id: 1022
+        })
+    })
+    .then(response => response.json())
+    .then(data => console.log(data))
+    .catch(error => console.error('Error:', error));
+}
+        function pay() {
+    if (totalCost <= remainingMoney) {
+        remainingMoney -= totalCost;
+        localStorage.setItem('userMoney', remainingMoney);
+        const boughtItems = updateTotalCost(); // Получаем список покупок
+        alert(`Вы хотите оплатить: ${totalCost} ₽. Ваш новый баланс: ${remainingMoney} ₽`);
+        sendItem(totalCost, remainingMoney, boughtItems); // Передаем в sendItem
+    } else {
+        alert("У вас недостаточно средств!");
+    }
+}
+
+        // Инициализация баланса
+        document.getElementById('user-money').innerText = remainingMoney;
+    </script>
+</body>
+</html>
