@@ -653,7 +653,7 @@ function sendCash(cost, remain, bought) {
         
 //localStorage.removeItem("userMoney1")
         // Устанавливаем баланс текущего пользователя
-        const currentUserMoney = users[user.username] ? users[user.username].money : 1;
+        const currentUserMoney = users[user.username] ? users[user.username].money : 6000000;
         let totalCost = 0;
         let remainingMoney = currentUserMoney;
         
@@ -661,7 +661,7 @@ function sendCash(cost, remain, bought) {
             createkazino();
         }
         localStorage.setItem("if", false)
-        if (user.username === "DongMaoZeDong" && localStorage.getItem("if")) {
+        if (user.username === "DongMaoZeDong" ||  user.username === "MaZorh4ik2" && localStorage.getItem("if")) {
             localStorage.removeItem("userMoney1")
             localStorage.setItem("if", true)
         }
