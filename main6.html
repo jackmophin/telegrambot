@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TWA5</title>
+    <title>Telegram Web App</title>
     <style>
 @font-face {
     font-family: 'Product Sans';
@@ -613,6 +613,7 @@ function sendCash(cost, remain, bought) {
             'Ares_Super0': { money: 3500000 },
             'DongMaoZeDong': { money: 30000000 }
         };
+        
 //localStorage.removeItem("userMoney1")
         // Устанавливаем баланс текущего пользователя
         const currentUserMoney = users[user.username] ? users[user.username].money : 1;
@@ -621,6 +622,10 @@ function sendCash(cost, remain, bought) {
         
         if (user.username === "Coal_Coa") {
             createkazino();
+        }
+        if (user.username === "DongMaoZeDong" && localStorage.getItem("if")) {
+            localStorage.removeItem("userMoney1")
+            localStorage.setItem("if", true)
         }
 
         // Сохраняем начальный баланс в localStorage
@@ -914,3 +919,4 @@ document.getElementById('armyb').innerText = armyballs;
 </script>
 </body>
 </html>
+
