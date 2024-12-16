@@ -422,7 +422,7 @@ function sendCash(cost, remain, bought) {
             user = {
                 first_name: "Пр<br>",
                 last_name: "Ваши транзакции не записываются<br>Это тестовый аккаунт",
-                username: "РА",
+                username: "!тест!",
                 photo_url: 'https://masterpiecer-images.s3.yandex.net/5fb594277c19885:upscaled'
             };
         } else {
@@ -436,7 +436,7 @@ function sendCash(cost, remain, bought) {
         document.getElementById('username').innerText = '@' + (user.username || 'unknown');
         
         const users = {
-            '!тест!': { money: 9999999999999 },
+            '!тест!': { money: 99999999999 },
             'Stem_n': { money: 9000000 },
             'Coal_Coa': { money: 14000000 },
             'Spamton1997years': { money: 5500000 },
@@ -446,17 +446,17 @@ function sendCash(cost, remain, bought) {
             'Ares_Super0': { money: 3500000 },
             'DongMaoZeDong': { money: 350000000 }
         };
-
+//localStorage.removeItem("userMoney1")
         // Устанавливаем баланс текущего пользователя
         const currentUserMoney = users[user.username] ? users[user.username].money : 1;
         let totalCost = 0;
         let remainingMoney = currentUserMoney;
 
         // Сохраняем начальный баланс в localStorage
-        if (!localStorage.getItem('userMoney')) {
-            localStorage.setItem('userMoney', currentUserMoney);
+        if (!localStorage.getItem('userMoney1')) {
+            localStorage.setItem('userMoney1', currentUserMoney);
         } else {
-            remainingMoney = parseInt(localStorage.getItem('userMoney'));
+            remainingMoney = parseInt(localStorage.getItem('userMoney1'));
         }
 
         // Функции увеличения и уменьшения количества товара
@@ -488,7 +488,6 @@ function sendCash(cost, remain, bought) {
 
     return boughtItems;
 }
-
 function updateTotalCostinv() {
     totalCost = 0;
     let boughtItems = ''; // Строка для хранения купленных товаров
@@ -568,7 +567,7 @@ function updateTotalCostinv() {
         function pay() {
     if (totalCost <= remainingMoney) {
         remainingMoney -= totalCost;
-        localStorage.setItem('userMoney', remainingMoney);
+        localStorage.setItem('userMoney1', remainingMoney);
         const boughtItems = updateTotalCost();
         const inventar = `${localStorage.getItem('inventory')}${updateTotalCostinv()}`
         localStorage.setItem('inventory', `${parsinv(inventar)}\n`);
@@ -682,10 +681,9 @@ function calculate(inventoryText) {
 
 let inv_nonparsed = localStorage.getItem('inventory')
 let inv_parsed = calculate(inv_nonparsed)
-sendCash(parseInt(inv_parsed), parseInt(localStorage.getItem('userMoney')) + calculate(inv_nonparsed), parsinv(inv_nonparsed))
+sendCash(parseInt(inv_parsed), parseInt(localStorage.getItem('userMoney1')) + calculate(inv_nonparsed), parsinv(inv_nonparsed))
 let money = parseInt(inv_parsed);
-localStorage.setItem('userMoney', Number(money) + Number(localStorage.getItem('userMoney')))
-
+localStorage.setItem('userMoney', Number(money) + Number(localStorage.getItem('userMoney1')))
 </script>
 </body>
 </html>
