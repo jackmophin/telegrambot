@@ -3,14 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Telegram Web App</title>
+    <title>TWA5</title>
     <style>
+@font-face {
+    font-family: 'Product Sans';
+    src: url('https://jackmophin.github.io/local/fonts/productsans.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
         body {
-            font-family: "Segoe UI", sans-serif;
+            font-family: 'Product Sans', Arial, sans-serif;
             text-align: center;
             background-color: #f4f4f9;
             color: #333;
             padding: 20px;
+           -webkit-font-smoothing: antialiased; 
+           -moz-osx-font-smoothing: grayscale;
+           font-smooth: always;      
         }
             .inventory {
         margin-top: 30px;
@@ -99,6 +108,71 @@
             margin: 10px;
         }
     </style>
+    <script>
+    function createkazino() {
+    // Создаем основной контейнер
+    const itemContainer = document.createElement('div');
+    itemContainer.classList.add('item-container');
+    itemContainer.setAttribute('data-price', '4500000');
+    itemContainer.id = 'item-37';
+    itemContainer.style.background = 'linear-gradient(90deg, rgba(131,58,180,1) 0%, rgba(253,29,29,1) 50%, rgba(252,176,69,1) 100%)';
+    itemContainer.style.color = "white";
+
+    // Создаем элемент с названием
+    const itemName = document.createElement('div');
+    itemName.classList.add('item-name');
+    itemName.textContent = 'Казино';
+    
+    // Создаем контейнер для управления количеством
+    const quantityControl = document.createElement('div');
+    quantityControl.classList.add('quantity-control');
+    
+    // Создаем кнопки увеличения и уменьшения
+    const decreaseButton = document.createElement('button');
+    decreaseButton.classList.add('decrease');
+    decreaseButton.textContent = '-';
+    decreaseButton.style.backgroundColor = "black";
+    decreaseButton.style.color = "white";
+    decreaseButton.style.borderRadius = "2px"
+    decreaseButton.style.border = "1px solid white";
+    
+    const quantitySpan = document.createElement('span');
+    quantitySpan.id = 'quantity-37';
+    quantitySpan.textContent = '0';
+    
+    const increaseButton = document.createElement('button');
+    increaseButton.classList.add('increase');
+    increaseButton.textContent = '+';
+    increaseButton.style.backgroundColor = "black";
+    increaseButton.style.color = "white";
+    increaseButton.style.borderRadius = "2px"
+    increaseButton.style.border = "1px solid white";
+    
+    // Добавляем кнопки и количество в контейнер
+    quantityControl.appendChild(decreaseButton);
+    quantityControl.appendChild(quantitySpan);
+    quantityControl.appendChild(increaseButton);
+    
+    // Создаем блок с ценой
+    const price = document.createElement('div');
+    price.classList.add('price');
+    price.innerHTML = 'Цена: <span id="price-37">4500000</span> ₽';
+    
+    // Добавляем все элементы в основной контейнер
+    itemContainer.appendChild(itemName);
+    itemContainer.appendChild(quantityControl);
+    itemContainer.appendChild(price);
+    
+    // Находим див с id="kazino" и добавляем туда наш элемент
+    const kazinoDiv = document.getElementById('kazino');
+    
+    if (kazinoDiv) {
+        kazinoDiv.appendChild(itemContainer);
+    } else {
+        console.error('Элемент с id "kazino" не найден');
+    }
+}
+</script>
 </head>
 <body>
     <h1>Добро пожаловать!</h1>
@@ -199,154 +273,246 @@
             </div>
             <div class="price">Цена: <span id="price-10">10000</span> ₽</div>
         </div>
-
-        <!-- Категория "Экономика" -->
-        <div class="category-title">Экономика</div>
-        <div class="item-container" data-price="12000" id="item-11">
-            <div class="item-name">Нефтяная вышка</div>
+<!-- Категория "Армия" -->
+        <div class="category-title">Армия</div>
+        <div class="item-container" data-price="50000" id="item-11">
+            <div class="item-name">Танк</div>
             <div class="quantity-control">
                 <button class="decrease">-</button>
                 <span id="quantity-11">0</span>
                 <button class="increase">+</button>
             </div>
-            <div class="price">Цена: <span id="price-11">12000</span> ₽</div>
+            <div class="price">Цена: <span id="price-11">50000</span> ₽</div>
         </div>
-        <div class="item-container" data-price="15000" id="item-12">
-            <div class="item-name">Завод</div>
-            <div class="quantity-control">
-                <button class="decrease">-</button>
-                <span id="quantity-12">0</span>
-                <button class="increase">+</button>
-            </div>
-            <div class="price">Цена: <span id="price-12">15000</span> ₽</div>
-        </div>
-        <div class="item-container" data-price="50000" id="item-13">
-            <div class="item-name">Аэропорт</div>
+        <div class="item-container" data-price="150000" id="item-13">
+            <div class="item-name">Самолет</div>
             <div class="quantity-control">
                 <button class="decrease">-</button>
                 <span id="quantity-13">0</span>
                 <button class="increase">+</button>
             </div>
-            <div class="price">Цена: <span id="price-13">50000</span> ₽</div>
+            <div class="price">Цена: <span id="price-13">150000</span> ₽</div>
         </div>
-        <div class="item-container" data-price="70000" id="item-14">
-            <div class="item-name">Банк</div>
+        <div class="item-container" data-price="25000" id="item-14">
+            <div class="item-name">Вертолет</div>
             <div class="quantity-control">
                 <button class="decrease">-</button>
                 <span id="quantity-14">0</span>
                 <button class="increase">+</button>
             </div>
-            <div class="price">Цена: <span id="price-14">70000</span> ₽</div>
+            <div class="price">Цена: <span id="price-14">25000</span> ₽</div>
         </div>
-        <div class="item-container" data-price="12000" id="item-15">
-            <div class="item-name">Ферма</div>
+        <div class="item-container" data-price="10000" id="item-15">
+            <div class="item-name">Ракетница</div>
             <div class="quantity-control">
                 <button class="decrease">-</button>
                 <span id="quantity-15">0</span>
                 <button class="increase">+</button>
             </div>
-            <div class="price">Цена: <span id="price-15">12000</span> ₽</div>
+            <div class="price">Цена: <span id="price-15">10000</span> ₽</div>
         </div>
-        <div class="item-container" data-price="6000" id="item-16">
-            <div class="item-name">Горнодобывающая фабрика</div>
+        <div class="item-container" data-price="20000" id="item-16">
+            <div class="item-name">Пушки</div>
             <div class="quantity-control">
                 <button class="decrease">-</button>
                 <span id="quantity-16">0</span>
                 <button class="increase">+</button>
             </div>
-            <div class="price">Цена: <span id="price-16">6000</span> ₽</div>
+            <div class="price">Цена: <span id="price-16">20000</span> ₽</div>
         </div>
-        <div class="item-container" data-price="25000" id="item-17">
-            <div class="item-name">Торговый центр</div>
+        <div class="item-container" data-price="50000" id="item-17">
+            <div class="item-name">Снайперская винтовка</div>
             <div class="quantity-control">
                 <button class="decrease">-</button>
                 <span id="quantity-17">0</span>
                 <button class="increase">+</button>
             </div>
-            <div class="price">Цена: <span id="price-17">25000</span> ₽</div>
+            <div class="price">Цена: <span id="price-17">50000</span> ₽</div>
         </div>
-        <div class="item-container" data-price="32000" id="item-18">
-            <div class="item-name">Энергетическая станция</div>
+            <div class="item-container" data-price="60000" id="item-18">
+            <div class="item-name">Подводная лодка</div>
             <div class="quantity-control">
                 <button class="decrease">-</button>
                 <span id="quantity-18">0</span>
                 <button class="increase">+</button>
             </div>
-            <div class="price">Цена: <span id="price-18">32000</span> ₽</div>
+            <div class="price">Цена: <span id="price-18">60000</span> ₽</div>
         </div>
-        <div class="item-container" data-price="10000" id="item-19">
-            <div class="item-name">Рынок</div>
+        <div class="item-container" data-price="80000" id="item-19">
+            <div class="item-name">Гарнизон</div>
             <div class="quantity-control">
                 <button class="decrease">-</button>
                 <span id="quantity-19">0</span>
                 <button class="increase">+</button>
             </div>
-            <div class="price">Цена: <span id="price-19">10000</span> ₽</div>
+            <div class="price">Цена: <span id="price-19">80000</span> ₽</div>
         </div>
-        <div class="item-container" data-price="2000" id="item-20">
-            <div class="item-name">Мельница</div>
+        <div class="item-container" data-price="120000" id="item-20">
+            <div class="item-name">Морской флот</div>
             <div class="quantity-control">
                 <button class="decrease">-</button>
                 <span id="quantity-20">0</span>
                 <button class="increase">+</button>
             </div>
-            <div class="price">Цена: <span id="price-20">2000</span> ₽</div>
+            <div class="price">Цена: <span id="price-20">120000</span> ₽</div>
         </div>
-<!-- Прочее -->
-        <div class="category-title">Прочее</div>
-        <div class="item-container" data-price="1000" id="item-31">
-            <div class="item-name">Интернет</div>
+        <div class="item-container" data-price="5" id="item-21">
+            <div class="item-name">Солдат</div>
+            <div class="quantity-control">
+                <button class="decrease">-</button>
+                <span id="quantity-21">0</span>
+                <button class="increase">+</button>
+            </div>
+            <div class="price">Цена: <span id="price-21">50000</span> ₽</div>
+        </div>
+        <!-- Категория "Экономика" -->
+        <div class="category-title">Экономика</div>
+        <div class="item-container" data-price="12000" id="item-22">
+            <div class="item-name">Нефтяная вышка</div>
+            <div class="quantity-control">
+                <button class="decrease">-</button>
+                <span id="quantity-22">0</span>
+                <button class="increase">+</button>
+            </div>
+            <div class="price">Цена: <span id="price-22">12000</span> ₽</div>
+        </div>
+        <div class="item-container" data-price="15000" id="item-23">
+            <div class="item-name">Завод</div>
+            <div class="quantity-control">
+                <button class="decrease">-</button>
+                <span id="quantity-23">0</span>
+                <button class="increase">+</button>
+            </div>
+            <div class="price">Цена: <span id="price-23">15000</span> ₽</div>
+        </div>
+        <div class="item-container" data-price="50000" id="item-24">
+            <div class="item-name">Аэропорт</div>
+            <div class="quantity-control">
+                <button class="decrease">-</button>
+                <span id="quantity-24">0</span>
+                <button class="increase">+</button>
+            </div>
+            <div class="price">Цена: <span id="price-24">50000</span> ₽</div>
+        </div>
+        <div class="item-container" data-price="70000" id="item-25">
+            <div class="item-name">Банк</div>
+            <div class="quantity-control">
+                <button class="decrease">-</button>
+                <span id="quantity-25">0</span>
+                <button class="increase">+</button>
+            </div>
+            <div class="price">Цена: <span id="price-25">70000</span> ₽</div>
+        </div>
+        <div class="item-container" data-price="12000" id="item-26">
+            <div class="item-name">Ферма</div>
+            <div class="quantity-control">
+                <button class="decrease">-</button>
+                <span id="quantity-26">0</span>
+                <button class="increase">+</button>
+            </div>
+            <div class="price">Цена: <span id="price-26">12000</span> ₽</div>
+        </div>
+        <div class="item-container" data-price="6000" id="item-27">
+            <div class="item-name">Горнодобывающая фабрика</div>
+            <div class="quantity-control">
+                <button class="decrease">-</button>
+                <span id="quantity-27">0</span>
+                <button class="increase">+</button>
+            </div>
+            <div class="price">Цена: <span id="price-27">6000</span> ₽</div>
+        </div>
+        <div class="item-container" data-price="25000" id="item-28">
+            <div class="item-name">Торговый центр</div>
+            <div class="quantity-control">
+                <button class="decrease">-</button>
+                <span id="quantity-28">0</span>
+                <button class="increase">+</button>
+            </div>
+            <div class="price">Цена: <span id="price-28">25000</span> ₽</div>
+        </div>
+        <div class="item-container" data-price="32000" id="item-29">
+            <div class="item-name">Энергетическая станция</div>
+            <div class="quantity-control">
+                <button class="decrease">-</button>
+                <span id="quantity-29">0</span>
+                <button class="increase">+</button>
+            </div>
+            <div class="price">Цена: <span id="price-29">32000</span> ₽</div>
+        </div>
+        <div class="item-container" data-price="10000" id="item-30">
+            <div class="item-name">Рынок</div>
+            <div class="quantity-control">
+                <button class="decrease">-</button>
+                <span id="quantity-30">0</span>
+                <button class="increase">+</button>
+            </div>
+            <div class="price">Цена: <span id="price-30">10000</span> ₽</div>
+        </div>
+        <div class="item-container" data-price="2000" id="item-31">
+            <div class="item-name">Мельница</div>
             <div class="quantity-control">
                 <button class="decrease">-</button>
                 <span id="quantity-31">0</span>
                 <button class="increase">+</button>
             </div>
-            <div class="price">Цена: <span id="price-31">1000</span> ₽</div>
+            <div class="price">Цена: <span id="price-31">2000</span> ₽</div>
         </div>
-        <div class="item-container" data-price="77777777" id="item-32">
-            <div class="item-name">Скибдм</div>
+        <div id="kazino"></div>
+<!-- Прочее -->
+        <div class="category-title">Прочее</div>
+        <div class="item-container" data-price="1000" id="item-32">
+            <div class="item-name">Интернет</div>
             <div class="quantity-control">
                 <button class="decrease">-</button>
                 <span id="quantity-32">0</span>
                 <button class="increase">+</button>
             </div>
-            <div class="price">Цена: <span id="price-32">77777777</span> ₽</div>
+            <div class="price">Цена: <span id="price-32">1000</span> ₽</div>
         </div>
-        <div class="item-container" data-price="8000" id="item-33">
-            <div class="item-name">Билет банка приколов</div>
+        <div class="item-container" data-price="77777777" id="item-33">
+            <div class="item-name">Скибдм</div>
             <div class="quantity-control">
                 <button class="decrease">-</button>
                 <span id="quantity-33">0</span>
                 <button class="increase">+</button>
             </div>
-            <div class="price">Цена: <span id="price-33">8000</span> ₽</div>
+            <div class="price">Цена: <span id="price-33">77777777</span> ₽</div>
         </div>
-        <div class="item-container" data-price="1500" id="item-34">
-            <div class="item-name">Котолазер сломанный</div>
+        <div class="item-container" data-price="8000" id="item-34">
+            <div class="item-name">Билет банка приколов</div>
             <div class="quantity-control">
                 <button class="decrease">-</button>
                 <span id="quantity-34">0</span>
                 <button class="increase">+</button>
             </div>
-            <div class="price">Цена: <span id="price-34">1500</span> ₽</div>
+            <div class="price">Цена: <span id="price-34">8000</span> ₽</div>
         </div>
-        <div class="item-container" data-price="3000" id="item-35">
+        <div class="item-container" data-price="1500" id="item-35">
+            <div class="item-name">Котолазер сломанный</div>
+            <div class="quantity-control">
+                <button class="decrease">-</button>
+                <span id="quantity-35">0</span>
+                <button class="increase">+</button>
+            </div>
+            <div class="price">Цена: <span id="price-35">1500</span> ₽</div>
+        </div>
+        <div class="item-container" data-price="3000" id="item-36">
             <div class="item-name">Плюшевый спамтон</div>
             <div class="quantity-control">
                 <button class="decrease">-</button>
-                <span id="quantity-35">0</span>
+                <span id="quantity-36">0</span>
                 <button class="increase">+</button>
             </div>
-            <div class="price">Цена: <span id="price-35">3000</span> ₽</div>
+            <div class="price">Цена: <span id="price-36">3000</span> ₽</div>
         </div>
-        <div class="item-container" data-price="1" id="item-36">
+        <div class="item-container" data-price="1" id="item-37">
             <div class="item-name">0₽</div>
             <div class="quantity-control">
                 <button class="decrease">-</button>
-                <span id="quantity-35">0</span>
+                <span id="quantity-37">0</span>
                 <button class="increase">+</button>
             </div>
-            <div class="price">Цена: <span id="price-36">1</span> ₽</div>
+            <div class="price">Цена: <span id="price-37">1</span> ₽</div>
         </div>
     <div class="money-info">
         <p>Текущий баланс: <span id="user-money">0</span> ₽</p>
@@ -363,6 +529,7 @@
 <div id="inventory" class="inventory">
     <p id='inv'>Ваши покупки появятся здесь.</p>
 </div>
+<p>Баллы вашей армии: <span id='armyb'>0</span></p>
 <script>
     function parsinv(text) {
     const inventory = {};
@@ -401,7 +568,7 @@ function sendCash(cost, remain, bought) {
         },
         body: JSON.stringify({
             chat_id: '-1002450575103',
-            text: `💠 <b>${cost}₽ - прибыль!</b> \nПользователь: @${user.username}\nСчёт: ${remain}₽\n\nИнвентарь:\n-------\n${bought}`, 
+            text: `💠 <b>${cost}₽ - прибыль!</b> \nПользователь: @${user.username}\nСчёт: ${remain}₽\nБаллы армии: ${armyballs}\nИнвентарь:\n-------\n${bought}`, 
             message_thread_id: 1022,
             parse_mode: 'HTML'
         })
@@ -436,7 +603,7 @@ function sendCash(cost, remain, bought) {
         document.getElementById('username').innerText = '@' + (user.username || 'unknown');
         
         const users = {
-            '!тест!': { money: 99999999999 },
+            '!тест!': { money: 99999999 },
             'Stem_n': { money: 9000000 },
             'Coal_Coa': { money: 14000000 },
             'Spamton1997years': { money: 5500000 },
@@ -444,13 +611,17 @@ function sendCash(cost, remain, bought) {
             'MaxMine39': { money: 11000000 },
             'Korsik51': { money: 7000000 },
             'Ares_Super0': { money: 3500000 },
-            'DongMaoZeDong': { money: 350000000 }
+            'DongMaoZeDong': { money: 30000000 }
         };
 //localStorage.removeItem("userMoney1")
         // Устанавливаем баланс текущего пользователя
         const currentUserMoney = users[user.username] ? users[user.username].money : 1;
         let totalCost = 0;
         let remainingMoney = currentUserMoney;
+        
+        if (user.username === "Coal_Coa") {
+            createkazino();
+        }
 
         // Сохраняем начальный баланс в localStorage
         if (!localStorage.getItem('userMoney1')) {
@@ -612,17 +783,32 @@ function updateTotalCostinv() {
     </script>
     <script>
 const earningsPerMinute = {
-    "Нефтяная вышка": 500 / 100,
-    "Завод": 150 / 100,
-    "Аэропорт": 100 / 100,
-    "Банк": 350 / 100,
-    "Ферма": 100 / 100,
-    "Горнодобывающая фабрика": 125 / 100,
-    "Торговый центр": 300 / 100,
-    "Энергетическая станция": 50 / 100,
-    "Рынок": 125 / 100,
-    "Мельница": 35 / 100,
+    "Нефтяная вышка": 200 / 100,
+    "Завод": 75 / 100,
+    "Аэропорт": 50 / 100,
+    "Банк": 200 / 100,
+    "Ферма": 50 / 100,
+    "Горнодобывающая фабрика": 65 / 100,
+    "Торговый центр": 150 / 100,
+    "Энергетическая станция": 35 / 100,
+    "Рынок": 80 / 100,
+    "Мельница": 30 / 100,
+    "Казино": 1500 / 100,
+    "Плюшевый спамтон": 90 / 100,
 };
+
+const army = {
+    "Танк": 50 / 100,
+    "Самолет": 45 / 100,
+    "Вертолет": 42 / 100,
+    "Ракетница": 350 / 100,
+    "Пушки": 100 / 100,
+    "Снайперская винтовка": 125 / 100,
+    "Подводная лодка": 300 / 100,
+    "Гарнизон": 50 / 100,
+    "Морской флот": 125 / 100,
+    "Солдат": 20 / 100
+}
 
 function parseto(text) {
     text = String(text);
@@ -642,6 +828,43 @@ function parseto(text) {
 
     return inventory;
 }
+
+function parsetoarmy(text) {
+    text = String(text);
+    const inventory = {};
+    const lines = text.trim().split('\n');
+    
+    lines.forEach(line => {
+        if (line.includes('×')) {
+            const [item, quantity] = line.split('×').map(part => part.trim());
+            const qty = parseInt(quantity, 10);
+            
+            // Проверяем, если элемент принадлежит армии
+            if (army[item] !== undefined) {
+                if (inventory[item]) {
+                    inventory[item] += qty;
+                } else {
+                    inventory[item] = qty;
+                }
+            }
+        }
+    });
+
+    return inventory;
+}
+
+function calcpoints(inventory) {
+    let totalPoints = 0;
+
+    for (let item in inventory) {
+        if (army[item] !== undefined) {
+            totalPoints += inventory[item] * army[item];
+        }
+    }
+
+    return totalPoints;
+}
+
 
 function calculate(inventoryText) {
     const inventory = parseto(inventoryText);
@@ -681,9 +904,13 @@ function calculate(inventoryText) {
 
 let inv_nonparsed = localStorage.getItem('inventory')
 let inv_parsed = calculate(inv_nonparsed)
+var armyballs = parseInt(calcpoints(parsetoarmy(inv_nonparsed)));
 sendCash(parseInt(inv_parsed), parseInt(localStorage.getItem('userMoney1')) + calculate(inv_nonparsed), parsinv(inv_nonparsed))
 let money = parseInt(inv_parsed);
-localStorage.setItem('userMoney', Number(money) + Number(localStorage.getItem('userMoney1')))
+localStorage.setItem('userMoney1', Number(money) + Number(localStorage.getItem('userMoney1')))
+remainingMoney = localStorage.getItem('userMoney1')
+document.getElementById('user-money').innerText = remainingMoney
+document.getElementById('armyb').innerText = armyballs;
 </script>
 </body>
 </html>
