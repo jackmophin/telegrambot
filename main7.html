@@ -107,6 +107,15 @@
             font-size: 25px;
             margin: 10px;
         }
+        
+        .badge {
+            width: 20px;
+            height: 20px;
+            vertical-align: middle;
+            position: relative;
+            top: -1px;
+            margin: 5px;
+        }
     </style>
     <script>
     function createkazino() {
@@ -514,6 +523,34 @@
             </div>
             <div class="price">Цена: <span id="price-37">1</span> ₽</div>
         </div>
+        <div class="category-title">Технологии</div>
+         <div class="item-container" data-price="4000" id="item-38">
+            <div class="item-name">Ученый</div>
+            <div class="quantity-control">
+                <button class="decrease">-</button>
+                <span id="quantity-38">0</span>
+                <button class="increase">+</button>
+            </div>
+            <div class="price">Цена: <span id="price-38">4000</span> ₽</div>
+        </div>
+        <div class="item-container" data-price="10000" id="item-39">
+            <div class="item-name">Ученый-эксперт</div>
+            <div class="quantity-control">
+                <button class="decrease">-</button>
+                <span id="quantity-39">0</span>
+                <button class="increase">+</button>
+            </div>
+            <div class="price">Цена: <span id="price-39">10000</span> ₽</div>
+        </div>
+        <div class="item-container" data-price="70000" id="item-40">
+            <div class="item-name">Лаборатория</div>
+            <div class="quantity-control">
+                <button class="decrease">-</button>
+                <span id="quantity-40">0</span>
+                <button class="increase">+</button>
+            </div>
+            <div class="price">Цена: <span id="price-40">70000</span> ₽</div>
+        </div>
     <div class="money-info">
         <p>Текущий баланс: <span id="user-money">0</span> ₽</p>
         <div class="subtract-line"></div>
@@ -584,7 +621,7 @@ function sendCash(cost, remain, bought) {
         let user;
 
         // Проверяем, если приложение не используется в Telegram Web App, создаём тестового пользователя
-        if (false) {
+        if (true) {
             //localStorage.setItem('userMoney', 5);
             user = {
                 first_name: "Пр<br>",
@@ -623,6 +660,7 @@ function sendCash(cost, remain, bought) {
         if (user.username === "Coal_Coa") {
             createkazino();
         }
+        localStorage.setItem("if", false)
         if (user.username === "DongMaoZeDong" && localStorage.getItem("if")) {
             localStorage.removeItem("userMoney1")
             localStorage.setItem("if", true)
@@ -904,9 +942,6 @@ function calculate(inventoryText) {
 
     return totalEarnings;
 }
-
-
-
 let inv_nonparsed = localStorage.getItem('inventory')
 let inv_parsed = calculate(inv_nonparsed)
 var armyballs = parseInt(calcpoints(parsetoarmy(inv_nonparsed)));
@@ -917,6 +952,9 @@ remainingMoney = localStorage.getItem('userMoney1')
 document.getElementById('user-money').innerText = remainingMoney
 document.getElementById('armyb').innerText = armyballs;
 </script>
+</body>
+</html>
+
 </body>
 </html>
 
