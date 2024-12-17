@@ -670,10 +670,10 @@ function sendCash(cost, remain, bought) {
             createkazino();
         }
     
-        if (!localStorage.getItem("if")) {
+        if (!localStorage.getItem("if1")) {
             localStorage.removeItem("userMoney1")
             localStorage.removeItem("inventory")
-            localStorage.setItem("if", true)
+            localStorage.setItem("if1", true)
         }
 
         if (user.username === 'imancat') {
