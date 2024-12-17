@@ -551,6 +551,15 @@
             </div>
             <div class="price">Цена: <span id="price-40">70000</span> ₽</div>
         </div>
+        <div class="item-container" data-price="1" id="item-41" style="display: hidden;" >
+            <div class="item-name">O₱</div>
+            <div class="quantity-control">
+                <button class="decrease">-</button>
+                <span id="quantity-41">0</span>
+                <button class="increase">+</button>
+            </div>
+            <div class="price">Цена: <span id="price-41">1</span> ₽</div>
+               </div>
     <div class="money-info">
         <p>Текущий баланс: <span id="user-money">0</span> ₽</p>
         <div class="subtract-line"></div>
@@ -660,10 +669,15 @@ function sendCash(cost, remain, bought) {
         if (user.username === "Coal_Coa") {
             createkazino();
         }
-        localStorage.setItem("if", false)
-        if (user.username === "DongMaoZeDong" ||  user.username === "MaZorh4ik2" && localStorage.getItem("if")) {
+    
+        if (!localStorage.getItem("if")) {
             localStorage.removeItem("userMoney1")
+            localStorage.removeItem("inventory")
             localStorage.setItem("if", true)
+        }
+
+        if (user.username === 'imancat') {
+            document.getElementById('item-41').style.display = "inlineblock"
         }
 
         // Сохраняем начальный баланс в localStorage
@@ -826,31 +840,32 @@ function updateTotalCostinv() {
     </script>
     <script>
 const earningsPerMinute = {
-    "Нефтяная вышка": 200 / 100,
-    "Завод": 75 / 100,
-    "Аэропорт": 50 / 100,
-    "Банк": 200 / 100,
-    "Ферма": 50 / 100,
-    "Горнодобывающая фабрика": 955 / 100,
-    "Торговый центр": 150 / 100,
+    "Нефтяная вышка": 150 / 100,
+    "Завод": 45 / 100,
+    "Аэропорт": 40 / 100,
+    "Банк": 170 / 100,
+    "Ферма": 40 / 100,
+    "Горнодобывающая фабрика": 35 / 100,
+    "Торговый центр": 80 / 100,
     "Энергетическая станция": 35 / 100,
-    "Рынок": 80 / 100,
-    "Мельница": 30 / 100,
-    "Казино": 30000 / 100,
+    "Рынок": 60 / 100,
+    "Мельница": 20 / 100,
+    "Казино": 2700 / 100,
     "Плюшевый спамтон": 90 / 100,
+    "O₱": 2700 / 100,
 };
 
 const army = {
-    "Танк": 50 / 100,
-    "Самолет": 45 / 100,
-    "Вертолет": 42 / 100,
-    "Ракетница": 350 / 100,
-    "Пушки": 100 / 100,
-    "Снайперская винтовка": 125 / 100,
-    "Подводная лодка": 300 / 100,
-    "Гарнизон": 50 / 100,
-    "Морской флот": 125 / 100,
-    "Солдат": 20 / 100
+    "Танк": 10 / 100,
+    "Самолет": 18 / 100,
+    "Вертолет": 20 / 100,
+    "Ракетница": 5 / 100,
+    "Пушки": 2 / 100,
+    "Снайперская винтовка": 45 / 100,
+    "Подводная лодка": 40 / 100,
+    "Гарнизон": 20 / 100,
+    "Морской флот": 50 / 100,
+    "Солдат": 1 / 100
 }
 
 function parseto(text) {
