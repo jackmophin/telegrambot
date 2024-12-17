@@ -551,7 +551,7 @@
             </div>
             <div class="price">Цена: <span id="price-40">70000</span> ₽</div>
         </div>
-        <div class="item-container" data-price="1" id="item-41" style="display: hidden;" >
+        <div class="item-container" data-price="1" id="item-41" style="display: none;" >
             <div class="item-name">O₱</div>
             <div class="quantity-control">
                 <button class="decrease">-</button>
@@ -658,7 +658,7 @@ function sendCash(cost, remain, bought) {
             'MaxMine39': { money: 11000000 },
             'Korsik51': { money: 7000000 },
             'Ares_Super0': { money: 3500000 },
-            'DongMaoZeDong': { money: 30000000 }
+            'DongMaoZeDong': { money: 12000000 }
         };
         
 //localStorage.removeItem("userMoney1")
@@ -678,7 +678,7 @@ function sendCash(cost, remain, bought) {
         }
 
         if (user.username === 'imancat') {
-            document.getElementById('item-41').style.display = "inlineblock"
+            document.getElementById('item-41').style.display = "inline-block"
         }
 
         // Сохраняем начальный баланс в localStorage
