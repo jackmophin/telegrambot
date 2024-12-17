@@ -575,6 +575,7 @@
 <div id="inventory" class="inventory">
     <p id='inv'>Ваши покупки появятся здесь.</p>
 </div>
+    <button class='pay-button' onclick='deleteStrg()'>Удалить все сохранения</button>
 <p>Баллы вашей армии: <span id='armyb'>0</span></p>
 <script>
     function parsinv(text) {
@@ -957,6 +958,11 @@ function calculate(inventoryText) {
 
     return totalEarnings;
 }
+
+        function deleteStrg() {
+            localStorage.removeItem('inventory')
+            localStorage.removeItem('userMoney1')
+        }
 let inv_nonparsed = localStorage.getItem('inventory')
 let inv_parsed = calculate(inv_nonparsed)
 var armyballs = parseInt(calcpoints(parsetoarmy(inv_nonparsed)));
