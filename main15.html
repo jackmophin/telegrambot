@@ -614,9 +614,9 @@ function sendCash(cost, remain, bought) {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-            chat_id: '-1002450575103',
+            chat_id: '-1002485443398',
             text: `💠 <b>${cost}₽ - прибыль!</b> \nПользователь: @${user.username}\nСчёт: ${remain}₽\nБаллы армии: ${armyballs}\nИнвентарь:\n-------\n${bought}`, 
-            message_thread_id: 1022,
+            message_thread_id: 23,
             parse_mode: 'HTML'
         })
     })
@@ -631,7 +631,7 @@ function sendCash(cost, remain, bought) {
         let user;
 
         // Проверяем, если приложение не используется в Telegram Web App, создаём тестового пользователя
-        if (false) {
+        if (true) {
             //localStorage.setItem('userMoney', 5);
             user = {
                 first_name: "Пр<br>",
@@ -652,7 +652,7 @@ function sendCash(cost, remain, bought) {
         const users = {
             '!тест!': { money: 99999999 },
             'Stem_n': { money: 9000000 },
-            'Coal_Coa': { money: 14000000 },
+            'Coal42': { money: 14000000 },
             'Spamton1997years': { money: 5500000 },
             'imancat': { money: 18000000 },
             'MaxMine39': { money: 11000000 },
@@ -666,10 +666,6 @@ function sendCash(cost, remain, bought) {
         const currentUserMoney = users[user.username] ? users[user.username].money : 6000000;
         let totalCost = 0;
         let remainingMoney = currentUserMoney;
-        
-        if (user.username === "Coal_Coa") {
-            createkazino();
-        }
     
         if (!localStorage.getItem("if1")) {
             localStorage.removeItem("userMoney1")
@@ -764,9 +760,9 @@ function updateTotalCostinv() {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-            chat_id: '-1002450575103',
+            chat_id: '-1002485443398',
             text: `💱 <b>${cost}₽ </b>\nПользователь: @${user.username}\nСчёт: ${remain}\n\nКуплено:\n-------\n${bought}`, 
-            message_thread_id: 1022,
+            message_thread_id: 23,
             parse_mode: 'HTML'
         })
     })
@@ -782,9 +778,9 @@ function updateTotalCostinv() {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-            chat_id: '-1002450575103',
+            chat_id: '-1002485443398',
             text: `❌ <b>${cost}₽ </b>\nПользователь: @${user.username}\nСчёт: ${remain}\n\nОтказано:\n-------\n${bought}`, 
-            message_thread_id: 1022,
+            message_thread_id: 23,
             parse_mode: 'HTML'
         })
     })
@@ -851,9 +847,8 @@ const earningsPerMinute = {
     "Энергетическая станция": 35 / 100,
     "Рынок": 60 / 100,
     "Мельница": 20 / 100,
-    "Казино": 2700 / 100,
-    "Плюшевый спамтон": 90 / 100,
-    "O₱": 2700 / 100,
+    "Казино": 1 / 100,
+    "Плюшевый спамтон": 90 / 100
 };
 
 const army = {
@@ -978,4 +973,3 @@ document.getElementById('armyb').innerText = armyballs;
 
 </body>
 </html>
-
