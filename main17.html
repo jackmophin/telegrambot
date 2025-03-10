@@ -626,7 +626,7 @@ function sendCash(cost, remain, bought) {
         let user;
 
         // Проверяем, если приложение не используется в Telegram Web App, создаём тестового пользователя
-        if (false) {
+        if (true) {
             //localStorage.setItem('userMoney', 5);
             user = {
                 first_name: "Пр<br>",
@@ -710,7 +710,7 @@ function updateTotalCostinv() {
 
     const itemContainers = document.querySelectorAll('.item-container');
     itemContainers.forEach(item => {
-        const quantity = parseInt(item.querySelector('span').innerText);
+        const quantity = parseInt(item.querySelector('input').value);
         const price = parseInt(item.getAttribute('data-price'));
         const itemName = item.querySelector('.item-name').innerText;
         
