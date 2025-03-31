@@ -751,6 +751,14 @@ function updateTotalCostinv() {
                 }
             });
         });
+        
+        document.querySelectorAll('.quantity-control input').forEach(input => {
+    input.addEventListener('input', function() {
+        // Гарантируем, что значение не меньше 0
+        if (this.value < 0) this.value = 0; 
+        updateTotalCost();
+    });
+});
 
         function sendItem(cost, remain, bought) {
     fetch('https://api.telegram.org/bot8048208715:AAHfwiObbcpXzdHfY62_gKzYdazVpsTb5GQ/sendMessage', {
@@ -851,16 +859,16 @@ const earningsPerMinute = {
 };
 
 const army = {
-    "Танк": 10 / 100,
-    "Самолет": 18 / 100,
-    "Вертолет": 20 / 100,
-    "Ракетница": 5 / 100,
-    "Пушки": 2 / 100,
-    "Снайперская винтовка": 45 / 100,
-    "Подводная лодка": 40 / 100,
-    "Гарнизон": 20 / 100,
-    "Морской флот": 50 / 100,
-    "Солдат": 1 / 100
+    "Танк": 10 / 1700,
+    "Самолет": 18 / 2000,
+    "Вертолет": 20 / 1000,
+    "Ракетница": 5 / 5000,
+    "Пушки": 2 / 2500,
+    "Снайперская винтовка": 1 / 1500,
+    "Подводная лодка": 1 / 900,
+    "Гарнизон": 20 / 1100,
+    "Морской флот": 1 / 700,
+    "Солдат": 1 / 1000
 }
 
 function parseto(text) {
