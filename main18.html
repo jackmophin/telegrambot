@@ -1,0 +1,990 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Telegram Web App</title>
+    <style>
+@font-face {
+    font-family: 'Product Sans';
+    src: url('https://jackmophin.github.io/local/fonts/productsans.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+        body {
+            font-family: 'Product Sans', Arial, sans-serif;
+            text-align: center;
+            background-color: black;
+            color: white;
+            padding: 20px;
+           -webkit-font-smoothing: antialiased; 
+           -moz-osx-font-smoothing: grayscale;
+           font-smooth: always;      
+        }
+    .inventory {
+        margin-top: 30px;
+        padding: 20px;
+        background-color: black;
+        border: 1px solid white;
+        border-radius: 5px;
+        text-align: left;
+    }
+    .inventory-item {
+        font-size: 16px;
+        margin: 5px 0;
+    }
+    
+        .avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 20%;
+            margin: 20px auto;
+            border: 2px solid #ccc;
+        }
+        .info {
+            margin-top: 20px;
+        }
+        .item-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding: 10px;
+            border: 1px solid white;
+            border-radius: 5px;
+            background-color: black;
+        }
+        .item-name {
+            font-size: 18px;
+        }
+        .quantity-control {
+            display: flex;
+            align-items: center;
+        }
+        .quantity-control button {
+             color: white;
+            background-color: black;
+            border-radius: 5px;
+            border: 1px solid white;
+            font-size: 18px;
+            padding: 5px 10px;
+            margin: 0 5px;
+            cursor: pointer;
+        }
+        .price {
+            font-size: 16px;
+        }
+        .total-cost {
+            font-size: 20px;
+            margin-top: 20px;
+        }
+        .pay-button {
+            padding: 10px 20px;
+            font-size: 18px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        .pay-button:hover {
+            background-color: #45a049;
+        }
+        .money-info {
+            margin-top: 30px;
+            font-size: 18px;
+        }
+        .subtract-line {
+            border-top: 2px solid #000;
+            margin: 10px 0;
+            width: 60%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        input {
+            width: 50px;
+            font-size: 18px;
+            color: white;
+            background-color: black;
+            border: 1px solid white;
+            border-radius: 4px;
+        }
+        .remaining-amount {
+            font-size: 20px;
+            margin-top: 10px;
+        }
+        
+        .category-title {
+            font-size: 25px;
+            margin: 10px;
+        }
+        
+        .badge {
+            width: 20px;
+            height: 20px;
+            vertical-align: middle;
+            position: relative;
+            top: -1px;
+            margin: 5px;
+        }
+    </style>
+    <script>
+    function createkazino() {
+    // Создаем основной контейнер
+    const itemContainer = document.createElement('div');
+    itemContainer.classList.add('item-container');
+    itemContainer.setAttribute('data-price', '4500000');
+    itemContainer.id = 'item-37';
+    itemContainer.style.background = 'linear-gradient(90deg, rgba(131,58,180,1) 0%, rgba(253,29,29,1) 50%, rgba(252,176,69,1) 100%)';
+    itemContainer.style.color = "white";
+
+    // Создаем элемент с названием
+    const itemName = document.createElement('div');
+    itemName.classList.add('item-name');
+    itemName.textContent = 'Казино';
+    
+    // Создаем контейнер для управления количеством
+    const quantityControl = document.createElement('div');
+    quantityControl.classList.add('quantity-control');
+    
+    // Создаем кнопки увеличения и уменьшения
+    const decreaseButton = document.createElement('button');
+    decreaseButton.classList.add('decrease');
+    decreaseButton.textContent = '-';
+    decreaseButton.style.backgroundColor = "black";
+    decreaseButton.style.color = "white";
+    decreaseButton.style.borderRadius = "2px"
+    decreaseButton.style.border = "1px solid white";
+    
+    const quantitySpan = document.createElement('span');
+    quantitySpan.id = 'quantity-37';
+    quantitySpan.textContent = '0';
+    
+    const increaseButton = document.createElement('button');
+    increaseButton.classList.add('increase');
+    increaseButton.textContent = '+';
+    increaseButton.style.backgroundColor = "black";
+    increaseButton.style.color = "white";
+    increaseButton.style.borderRadius = "2px"
+    increaseButton.style.border = "1px solid white";
+    
+    // Добавляем кнопки и количество в контейнер
+    quantityControl.appendChild(decreaseButton);
+    quantityControl.appendChild(quantitySpan);
+    quantityControl.appendChild(increaseButton);
+    
+    // Создаем блок с ценой
+    const price = document.createElement('div');
+    price.classList.add('price');
+    price.innerHTML = 'Цена: <span id="price-37">4500000</span> ₽';
+    
+    // Добавляем все элементы в основной контейнер
+    itemContainer.appendChild(itemName);
+    itemContainer.appendChild(quantityControl);
+    itemContainer.appendChild(price);
+    
+    // Находим див с id="kazino" и добавляем туда наш элемент
+    const kazinoDiv = document.getElementById('kazino');
+    
+    if (kazinoDiv) {
+        kazinoDiv.appendChild(itemContainer);
+    } else {
+        console.error('Элемент с id "kazino" не найден');
+    }
+}
+</script>
+</head>
+<body>
+    <h1>Добро пожаловать!!</h1>
+    <img id="avatar" class="avatar" src="" alt="User Avatar">
+    <div class="info">
+        <h2 id="name">Имя пользователя</h2>
+        <p id="username">@username</p>
+    </div>
+
+        <div class="category-title">Народ</div>
+        <div class="item-container" data-price="1000" id="item-1">
+            <div class="item-name">Жилой дом</div>
+            <div class="quantity-control">
+                <button class="decrease">-</button>
+                <input type='number' min="0" id="quantity-1" value="0">
+                <button class="increase">+</button>
+            </div>
+            <div class="price">Цена: <span id="price-1">1000</span> ₽</div>
+        </div>
+        <div class="item-container" data-price="500" id="item-2">
+            <div class="item-name">Школа</div>
+            <div class="quantity-control">
+                <button class="decrease">-</button>
+                <input type='number' min="0" id="quantity-2" value="0">
+                <button class="increase">+</button>
+            </div>
+            <div class="price">Цена: <span id="price-2">500</span> ₽</div>
+        </div>
+        <div class="item-container" data-price="2000" id="item-3">
+            <div class="item-name">Больница</div>
+            <div class="quantity-control">
+                <button class="decrease">-</button>
+                <input type='number' min="0" id="quantity-3" value="0">
+                <button class="increase">+</button>
+            </div>
+            <div class="price">Цена: <span id="price-3">2000</span> ₽</div>
+        </div>
+        <div class="item-container" data-price="1500" id="item-4">
+            <div class="item-name">Детский сад</div>
+            <div class="quantity-control">
+                <button class="decrease">-</button>
+                <input type='number' min="0" id="quantity-4" value="0">
+                <button class="increase">+</button>
+            </div>
+            <div class="price">Цена: <span id="price-4">1500</span> ₽</div>
+        </div>
+        <div class="item-container" data-price="1200" id="item-5">
+            <div class="item-name">Парк</div>
+            <div class="quantity-control">
+                <button class="decrease">-</button>
+                <input type='number' min="0" id="quantity-5" value="0">
+                <button class="increase">+</button>
+            </div>
+            <div class="price">Цена: <span id="price-5">1200</span> ₽</div>
+        </div>
+        <div class="item-container" data-price="3000" id="item-6">
+            <div class="item-name">Церковь</div>
+            <div class="quantity-control">
+                <button class="decrease">-</button>
+                <input type='number' min="0" id="quantity-6" value="0">
+                <button class="increase">+</button>
+            </div>
+            <div class="price">Цена: <span id="price-6">3000</span> ₽</div>
+        </div>
+        <div class="item-container" data-price="450" id="item-7">
+            <div class="item-name">Площадь</div>
+            <div class="quantity-control">
+                <button class="decrease">-</button>
+                <input type='number' min="0" id="quantity-7" value="0">
+                <button class="increase">+</button>
+            </div>
+            <div class="price">Цена: <span id="price-7">450</span> ₽</div>
+        </div>
+        <div class="item-container" data-price="3500" id="item-8">
+            <div class="item-name">Магазин</div>
+            <div class="quantity-control">
+                <button class="decrease">-</button>
+                <input type='number' min="0" id="quantity-8" value="0">
+                <button class="increase">+</button>
+            </div>
+            <div class="price">Цена: <span id="price-8">3500</span> ₽</div>
+        </div>
+        <div class="item-container" data-price="2500" id="item-9">
+            <div class="item-name">Сельский дом</div>
+            <div class="quantity-control">
+                <button class="decrease">-</button>
+                <input type='number' min="0" id="quantity-9" value="0">
+                <button class="increase">+</button>
+            </div>
+            <div class="price">Цена: <span id="price-9">2500</span> ₽</div>
+        </div>
+        <div class="item-container" data-price="10000" id="item-10">
+            <div class="item-name">Спортивный комплекс</div>
+            <div class="quantity-control">
+                <button class="decrease">-</button>
+                <input type='number' min="0" id="quantity-10" value="0">
+                <button class="increase">+</button>
+            </div>
+            <div class="price">Цена: <span id="price-10">10000</span> ₽</div>
+        </div>
+<!-- Категория "Армия" -->
+        <div class="category-title">Армия</div>
+        <div class="item-container" data-price="50000" id="item-11">
+            <div class="item-name">Танк</div>
+            <div class="quantity-control">
+                <button class="decrease">-</button>
+                <input type='number' min="0" id="quantity-11" value="0">
+                <button class="increase">+</button>
+            </div>
+            <div class="price">Цена: <span id="price-11">50000</span> ₽</div>
+        </div>
+        <div class="item-container" data-price="150000" id="item-13">
+            <div class="item-name">Самолет</div>
+            <div class="quantity-control">
+                <button class="decrease">-</button>
+                <input type='number' min="0" id="quantity-13" value="0">
+                <button class="increase">+</button>
+            </div>
+            <div class="price">Цена: <span id="price-13">150000</span> ₽</div>
+        </div>
+        <div class="item-container" data-price="25000" id="item-14">
+            <div class="item-name">Вертолет</div>
+            <div class="quantity-control">
+                <button class="decrease">-</button>
+                <input type='number' min="0" id="quantity-14" value="0">
+                <button class="increase">+</button>
+            </div>
+            <div class="price">Цена: <span id="price-14">25000</span> ₽</div>
+        </div>
+        <div class="item-container" data-price="10000" id="item-15">
+            <div class="item-name">Ракетница</div>
+            <div class="quantity-control">
+                <button class="decrease">-</button>
+                <input type='number' min="0" id="quantity-15" value="0">
+                <button class="increase">+</button>
+            </div>
+            <div class="price">Цена: <span id="price-15">10000</span> ₽</div>
+        </div>
+        <div class="item-container" data-price="20000" id="item-16">
+            <div class="item-name">Пушки</div>
+            <div class="quantity-control">
+                <button class="decrease">-</button>
+                <input type='number' min="0" id="quantity-16" value="0">
+                <button class="increase">+</button>
+            </div>
+            <div class="price">Цена: <span id="price-16">20000</span> ₽</div>
+        </div>
+        <div class="item-container" data-price="50000" id="item-17">
+            <div class="item-name">Снайперская винтовка</div>
+            <div class="quantity-control">
+                <button class="decrease">-</button>
+                <input type='number' min="0" id="quantity-17" value="0">
+                <button class="increase">+</button>
+            </div>
+            <div class="price">Цена: <span id="price-17">50000</span> ₽</div>
+        </div>
+            <div class="item-container" data-price="60000" id="item-18">
+            <div class="item-name">Подводная лодка</div>
+            <div class="quantity-control">
+                <button class="decrease">-</button>
+                <input type='number' min="0" id="quantity-18" value="0">
+                <button class="increase">+</button>
+            </div>
+            <div class="price">Цена: <span id="price-18">60000</span> ₽</div>
+        </div>
+        <div class="item-container" data-price="80000" id="item-19">
+            <div class="item-name">Гарнизон</div>
+            <div class="quantity-control">
+                <button class="decrease">-</button>
+                <input type='number' min="0" id="quantity-19" value="0">
+                <button class="increase">+</button>
+            </div>
+            <div class="price">Цена: <span id="price-19">80000</span> ₽</div>
+        </div>
+        <div class="item-container" data-price="120000" id="item-20">
+            <div class="item-name">Морской флот</div>
+            <div class="quantity-control">
+                <button class="decrease">-</button>
+                <input type='number' min="0" id="quantity-20" value="0">
+                <button class="increase">+</button>
+            </div>
+            <div class="price">Цена: <span id="price-20">120000</span> ₽</div>
+        </div>
+        <div class="item-container" data-price="5" id="item-21">
+            <div class="item-name">Солдат</div>
+            <div class="quantity-control">
+                <button class="decrease">-</button>
+                <input type='number' min="0" id="quantity-21" value="0">
+                <button class="increase">+</button>
+            </div>
+            <div class="price">Цена: <span id="price-21">50000</span> ₽</div>
+        </div>
+        <!-- Категория "Экономика" -->
+        <div class="category-title">Экономика</div>
+        <div class="item-container" data-price="12000" id="item-22">
+            <div class="item-name">Нефтяная вышка</div>
+            <div class="quantity-control">
+                <button class="decrease">-</button>
+                <input type='number' min="0" id="quantity-22" value="0">
+                <button class="increase">+</button>
+            </div>
+            <div class="price">Цена: <span id="price-22">12000</span> ₽</div>
+        </div>
+        <div class="item-container" data-price="15000" id="item-23">
+            <div class="item-name">Завод</div>
+            <div class="quantity-control">
+                <button class="decrease">-</button>
+                <input type='number' min="0" value="0">
+                <button class="increase">+</button>
+            </div>
+            <div class="price">Цена: <span id="price-23">15000</span> ₽</div>
+        </div>
+        <div class="item-container" data-price="50000" id="item-24">
+            <div class="item-name">Аэропорт</div>
+            <div class="quantity-control">
+                <button class="decrease">-</button>
+                <input type='number' min="0" id="quantity-24" value="0">
+                <button class="increase">+</button>
+            </div>
+            <div class="price">Цена: <span id="price-24">50000</span> ₽</div>
+        </div>
+        <div class="item-container" data-price="70000" id="item-25">
+            <div class="item-name">Банк</div>
+            <div class="quantity-control">
+                <button class="decrease">-</button>
+                <input type='number' min="0" id="quantity-25" value="0">
+                <button class="increase">+</button>
+            </div>
+            <div class="price">Цена: <span id="price-25">70000</span> ₽</div>
+        </div>
+        <div class="item-container" data-price="12000" id="item-26">
+            <div class="item-name">Ферма</div>
+            <div class="quantity-control">
+                <button class="decrease">-</button>
+                <input type='number' min="0" id="quantity-26" value="0">
+                <button class="increase">+</button>
+            </div>
+            <div class="price">Цена: <span id="price-26">12000</span> ₽</div>
+        </div>
+        <div class="item-container" data-price="6000" id="item-27">
+            <div class="item-name">Горнодобывающая фабрика</div>
+            <div class="quantity-control">
+                <button class="decrease">-</button>
+                <input type='number' min="0" id="quantity-27" value="0">
+                <button class="increase">+</button>
+            </div>
+            <div class="price">Цена: <span id="price-27">6000</span> ₽</div>
+        </div>
+        <div class="item-container" data-price="25000" id="item-28">
+            <div class="item-name">Торговый центр</div>
+            <div class="quantity-control">
+                <button class="decrease">-</button>
+                <input type='number' min="0" id="quantity-28" value="0">
+                <button class="increase">+</button>
+            </div>
+            <div class="price">Цена: <span id="price-28">25000</span> ₽</div>
+        </div>
+        <div class="item-container" data-price="32000" id="item-29">
+            <div class="item-name">Энергетическая станция</div>
+            <div class="quantity-control">
+                <button class="decrease">-</button>
+                <input type='number' min="0" id="quantity-29" value="0">
+                <button class="increase">+</button>
+            </div>
+            <div class="price">Цена: <span id="price-29">32000</span> ₽</div>
+        </div>
+        <div class="item-container" data-price="10000" id="item-30">
+            <div class="item-name">Рынок</div>
+            <div class="quantity-control">
+                <button class="decrease">-</button>
+                <input type='number' min="0" id="quantity-30" value="0">
+                <button class="increase">+</button>
+            </div>
+            <div class="price">Цена: <span id="price-30">10000</span> ₽</div>
+        </div>
+        <div class="item-container" data-price="2000" id="item-31">
+            <div class="item-name">Мельница</div>
+            <div class="quantity-control">
+                <button class="decrease">-</button>
+                <input type='number' min="0" id="quantity-31" value="0">
+                <button class="increase">+</button>
+            </div>
+            <div class="price">Цена: <span id="price-31">2000</span> ₽</div>
+        </div>
+        <div id="kazino"></div>
+<!-- Прочее -->
+        <div class="category-title">Прочее</div>
+        <div class="item-container" data-price="1000" id="item-32">
+            <div class="item-name">Интернет</div>
+            <div class="quantity-control">
+                <button class="decrease">-</button>
+                <input type='number' min="0" id="quantity-32" value="0">
+                <button class="increase">+</button>
+            </div>
+            <div class="price">Цена: <span id="price-32">1000</span> ₽</div>
+        </div>
+        <div class="item-container" data-price="77777777" id="item-33">
+            <div class="item-name">Скибдм</div>
+            <div class="quantity-control">
+                <button class="decrease">-</button>
+                <input type='number' min="0" id="quantity-33" value="0">
+                <button class="increase">+</button>
+            </div>
+            <div class="price">Цена: <span id="price-33">77777777</span> ₽</div>
+        </div>
+        <div class="item-container" data-price="8000" id="item-34">
+            <div class="item-name">Билет банка приколов</div>
+            <div class="quantity-control">
+                <button class="decrease">-</button>
+                <input type='number' min="0" id="quantity-34" value="0">
+                <button class="increase">+</button>
+            </div>
+            <div class="price">Цена: <span id="price-34">8000</span> ₽</div>
+        </div>
+        <div class="item-container" data-price="1500" id="item-35">
+            <div class="item-name">Котолазер сломанный</div>
+            <div class="quantity-control">
+                <button class="decrease">-</button>
+                <input type='number' min="0" id="quantity-35" value="0">
+                <button class="increase">+</button>
+            </div>
+            <div class="price">Цена: <span id="price-35">1500</span> ₽</div>
+        </div>
+        <div class="item-container" data-price="3000" id="item-36">
+            <div class="item-name">Плюшевый спамтон</div>
+            <div class="quantity-control">
+                <button class="decrease">-</button>
+                <input type='number' min="0" id="quantity-36" value="0">
+                <button class="increase">+</button>
+            </div>
+            <div class="price">Цена: <span id="price-36">3000</span> ₽</div>
+        </div>
+        <div class="item-container" data-price="1" id="item-37">
+            <div class="item-name">0₽</div>
+            <div class="quantity-control">
+                <button class="decrease">-</button>
+                <input type='number' min="0" id="quantity-37" value="0">
+                <button class="increase">+</button>
+            </div>
+            <div class="price">Цена: <span id="price-37">1</span> ₽</div>
+        </div>
+        <div class="category-title">Технологии</div>
+         <div class="item-container" data-price="4000" id="item-38">
+            <div class="item-name">Ученый</div>
+            <div class="quantity-control">
+                <button class="decrease">-</button>
+                <input type='number' min="0" id="quantity-38" value="0">
+                <button class="increase">+</button>
+            </div>
+            <div class="price">Цена: <span id="price-38">4000</span> ₽</div>
+        </div>
+        <div class="item-container" data-price="10000" id="item-39">
+            <div class="item-name">Ученый-эксперт</div>
+            <div class="quantity-control">
+                <button class="decrease">-</button>
+                <input type='number' min="0" id="quantity-39" value="0">
+                <button class="increase">+</button>
+            </div>
+            <div class="price">Цена: <span id="price-39">10000</span> ₽</div>
+        </div>
+        <div class="item-container" data-price="70000" id="item-40">
+            <div class="item-name">Лаборатория</div>
+            <div class="quantity-control">
+                <button class="decrease">-</button>
+                <input type='number' min="0" id="quantity-40" value="0">
+                <button class="increase">+</button>
+            </div>
+            <div class="price">Цена: <span id="price-40">70000</span> ₽</div>
+        </div>
+    <div class="money-info">
+        <p>Текущий баланс: <span id="user-money">0</span> ₽</p>
+        <div class="subtract-line"></div>
+        <p>После покупки: <span id="remaining-money">0</span> ₽</p>
+    </div>
+
+    <div class="total-cost">
+        Общая стоимость: <span id="total-cost">0</span> ₽
+    </div>
+
+    <button class="pay-button" id="pay-button" onclick="pay()">Оплатить</button>
+<div class="category-title">Инвентарь</div>
+<div id="inventory" class="inventory">
+    <p id='inv'>Ваши покупки появятся здесь.</p>
+</div>
+    <button class='pay-button' onclick='deleteStrg()'>Удалить все сохранения</button>
+<p>Баллы вашей армии: <span id='armyb'>0</span></p>
+<script>
+    function parsinv(text) {
+    const inventory = {};
+
+    // Разделяем текст на строки
+    const lines = text.trim().split('\n');
+
+    lines.forEach(line => {
+        // Разделяем строку по символу '×'
+        if (line.includes('×')) {
+            const [item, quantity] = line.split('×').map(part => part.trim());
+            const qty = parseInt(quantity, 10);
+
+            // Добавляем товар в объект или увеличиваем его количество
+            if (inventory[item]) {
+                inventory[item] += qty;
+            } else {
+                inventory[item] = qty;
+            }
+        }
+    });
+
+    // Преобразуем объект обратно в строку
+    const result = Object.entries(inventory)
+        .map(([item, quantity]) => `${item} × ${quantity}`)
+        .join('\n');
+
+    return result;
+}
+
+function sendCash(cost, remain, bought) {
+    fetch('https://api.telegram.org/bot8048208715:AAHfwiObbcpXzdHfY62_gKzYdazVpsTb5GQ/sendMessage', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            chat_id: '-1002485443398',
+            text: `💠 <b>${cost}₽ - прибыль!</b> \nПользователь: @${user.username}\nСчёт: ${remain}₽\nБаллы армии: ${armyballs}\nИнвентарь:\n-------\n${bought}`, 
+            message_thread_id: 23,
+            parse_mode: 'HTML'
+        })
+    })
+    .then(response => response.json())
+    .then(data => console.log(data))
+    .catch(error => console.error('Error:', error));
+}
+
+</script>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script>
+        let user;
+
+        // Проверяем, если приложение не используется в Telegram Web App, создаём тестового пользователя
+        if (true) {
+            //localStorage.setItem('userMoney', 5);
+            user = {
+                first_name: "Пр<br>",
+                last_name: "Ваши транзакции не записываются<br>Это тестовый аккаунт",
+                username: "!тест!",
+                photo_url: 'https://masterpiecer-images.s3.yandex.net/5fb594277c19885:upscaled'
+            };
+        } else {
+            Telegram.WebApp.ready();
+            user = Telegram.WebApp.initDataUnsafe.user;
+        }
+
+        // Устанавливаем данные пользователя
+        document.getElementById('avatar').src = user.photo_url || 'https://via.placeholder.com/100';
+        document.getElementById('name').innerHTML = user.first_name + (user.last_name ? ' ' + user.last_name : '');
+        document.getElementById('username').innerText = '@' + (user.username || 'unknown');
+        
+        const users = {
+            '!тест!': { money: 90 }
+        };
+        
+//localStorage.removeItem("userMoney1")
+        // Устанавливаем баланс текущего пользователя
+        const currentUserMoney = users[user.username] ? users[user.username].money : 6000000;
+        let totalCost = 0;
+        let remainingMoney = currentUserMoney;
+    
+        if (!localStorage.getItem("if1")) {
+            localStorage.removeItem("userMoney1")
+            localStorage.removeItem("inventory")
+            localStorage.setItem("if1", true)
+        }
+
+        if (user.username === 'imancat') {
+            document.getElementById('item-41').style.display = "inline-block"
+        }
+
+        // Сохраняем начальный баланс в localStorage
+        if (!localStorage.getItem('userMoney1')) {
+            localStorage.setItem('userMoney1', currentUserMoney);
+        } else {
+            remainingMoney = parseInt(localStorage.getItem('userMoney1'));
+        }
+
+        // Функции увеличения и уменьшения количества товара
+        function updateTotalCost() {
+    totalCost = 0;
+    let boughtItems = ''; // Строка для хранения купленных товаров
+
+    const itemContainers = document.querySelectorAll('.item-container');
+itemContainers.forEach(item => {
+    const input = item.querySelector('input');
+    if (!input) return; // Если input не найден, пропускаем итерацию
+
+    const quantity = parseInt(input.value) || 0; // Если пусто, считаем как 0
+    const price = parseInt(item.getAttribute('data-price')) || 0;
+    const itemName = item.querySelector('.item-name')?.innerText || 'Unknown';
+
+    if (quantity > 0) {
+        boughtItems += `${itemName} × ${quantity}\n`;
+    }
+
+    totalCost += quantity * price;
+});
+
+
+    if (boughtItems !== '') {
+        let items = boughtItems.split('\n').length - 1
+        let tovar = (items === 1) ? ' товар' : (items >= 2 && items <= 4) ? ' товара' : ' товаров';
+        boughtItems += '-------\nВсего: ' + items + tovar; // Добавляем количество товаров
+    }
+
+    document.getElementById('total-cost').innerText = totalCost;
+    document.getElementById('remaining-money').innerText = remainingMoney - totalCost;
+
+    return boughtItems;
+}
+function updateTotalCostinv() {
+    totalCost = 0;
+    let boughtItems = ''; // Строка для хранения купленных товаров
+
+    const itemContainers = document.querySelectorAll('.item-container');
+    itemContainers.forEach(item => {
+        const quantity = parseInt(item.querySelector('input').value);
+        const price = parseInt(item.getAttribute('data-price'));
+        const itemName = item.querySelector('.item-name').innerText;
+        
+        if (quantity > 0) {
+            boughtItems += `${itemName} × ${quantity}\n`;
+        }
+        
+        totalCost += quantity * price;
+    });
+
+    return boughtItems;
+}
+
+        document.querySelectorAll('.increase').forEach(button => {
+            button.addEventListener('click', function() {
+                const quantitySpan = this.parentElement.querySelector('input');
+                let quantity = parseInt(quantitySpan.value);
+                quantitySpan.value = quantity + 1;
+                updateTotalCost();
+            });
+        });
+
+        document.querySelectorAll('.decrease').forEach(button => {
+            button.addEventListener('click', function() {
+                const quantitySpan = this.parentElement.querySelector('input');
+                let quantity = parseInt(quantitySpan.value);
+                if (quantity > 0) {
+                    quantitySpan.value = quantity - 1;
+                    updateTotalCost();
+                }
+            });
+        });
+        
+        document.querySelectorAll('.quantity-control input').forEach(input => {
+    input.addEventListener('input', function() {
+        // Гарантируем, что значение не меньше 0
+        if (this.value < 0) this.value = 0; 
+        updateTotalCost();
+    });
+});
+
+        function sendItem(cost, remain, bought) {
+    fetch('https://api.telegram.org/bot8048208715:AAHfwiObbcpXzdHfY62_gKzYdazVpsTb5GQ/sendMessage', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            chat_id: '-1002485443398',
+            text: `💱 <b>${cost}₽ </b>\nПользователь: @${user.username}\nСчёт: ${remain}\n\nКуплено:\n-------\n${bought}`, 
+            message_thread_id: 23,
+            parse_mode: 'HTML'
+        })
+    })
+    .then(response => response.json())
+    .then(data => console.log(data))
+    .catch(error => console.error('Error:', error));
+}
+
+        function sendItemdis(cost, remain, bought) {
+    fetch('https://api.telegram.org/bot8048208715:AAHfwiObbcpXzdHfY62_gKzYdazVpsTb5GQ/sendMessage', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            chat_id: '-1002485443398',
+            text: `❌ <b>${cost}₽ </b>\nПользователь: @${user.username}\nСчёт: ${remain}\n\nОтказано:\n-------\n${bought}`, 
+            message_thread_id: 23,
+            parse_mode: 'HTML'
+        })
+    })
+    .then(response => response.json())
+    .then(data => console.log(data))
+    .catch(error => console.error('Error:', error));
+}
+
+        function pay() {
+    if (totalCost <= remainingMoney) {
+        remainingMoney -= totalCost;
+        localStorage.setItem('userMoney1', remainingMoney);
+        const boughtItems = updateTotalCost();
+        const inventar = `${localStorage.getItem('inventory')}${updateTotalCostinv()}`
+        localStorage.setItem('inventory', `${parsinv(inventar)}\n`);
+        document.getElementById('inv').innerText = localStorage.getItem('inventory');
+        alert(`Вы хотите оплатить: ${totalCost} ₽. Ваш новый баланс: ${remainingMoney} ₽`);
+        sendItem(totalCost, remainingMoney, boughtItems); // Передаем в sendItem
+    } else {
+        alert("У вас недостаточно средств!");
+        const boughtItems = updateTotalCost(); // Получаем список покупок
+        sendItemdis(totalCost, remainingMoney, boughtItems);
+    }
+}
+        if (localStorage.getItem('inventory') === null) {
+            localStorage.setItem('inventory', '');
+        }
+        document.getElementById('inv').innerText = parsinv(localStorage.getItem('inventory'));
+        document.getElementById('user-money').innerText = remainingMoney
+        
+        function parseInventoryToObject(text) {
+    const inventory = {};
+
+    // Разделяем текст на строки
+    const lines = text.trim().split('\n');
+
+    lines.forEach(line => {
+        // Разделяем строку по символу '×'
+        if (line.includes('×')) {
+            const [item, quantity] = line.split('×').map(part => part.trim());
+            const qty = parseInt(quantity, 10);
+
+            // Добавляем товар в объект или увеличиваем его количество
+            if (inventory[item]) {
+                inventory[item] += qty;
+            } else {
+                inventory[item] = qty;
+            }
+        }
+    });
+
+    return inventory;
+}
+    </script>
+    <script>
+const earningsPerMinute = {
+    "Нефтяная вышка": 25 / 1000,
+    "Завод": 30 / 1000,
+    "Аэропорт": 40 / 1000,
+    "Банк": 80 / 1000,
+    "Ферма": 40 / 1000,
+    "Горнодобывающая фабрика": 35 / 1000,
+    "Торговый центр": 70 / 100,
+    "Энергетическая станция": 35 / 1000,
+    "Рынок": 60 / 1000,
+    "Мельница": 20 / 1000,
+    "Казино": 1 / 100,
+    "Плюшевый спамтон": 10 / 100
+};
+
+const army = {
+    "Танк": 1 / 2400,
+    "Самолет": 1 / 2500,
+    "Вертолет": 1 / 2500,
+    "Ракетница": 1 / 3500,
+    "Пушки": 1 / 2500,
+    "Снайперская винтовка": 1 / 2500,
+    "Подводная лодка": 1 / 2400,
+    "Гарнизон": 1 / 3100,
+    "Морской флот": 1 / 2800,
+    "Солдат": 1 / 17000
+}
+
+function parseto(text) {
+    text = String(text);
+    const inventory = {};
+    const lines = text.trim().split('\n');
+    lines.forEach(line => {
+        if (line.includes('×')) {
+            const [item, quantity] = line.split('×').map(part => part.trim());
+            const qty = parseInt(quantity, 10);
+            if (inventory[item]) {
+                inventory[item] += qty;
+            } else {
+                inventory[item] = qty;
+            }
+        }
+    });
+
+    return inventory;
+}
+
+function parsetoarmy(text) {
+    text = String(text);
+    const inventory = {};
+    const lines = text.trim().split('\n');
+    
+    lines.forEach(line => {
+        if (line.includes('×')) {
+            const [item, quantity] = line.split('×').map(part => part.trim());
+            const qty = parseInt(quantity, 10);
+            
+            // Проверяем, если элемент принадлежит армии
+            if (army[item] !== undefined) {
+                if (inventory[item]) {
+                    inventory[item] += qty;
+                } else {
+                    inventory[item] = qty;
+                }
+            }
+        }
+    });
+
+    return inventory;
+}
+
+function taxes() {
+    let c = Number(localStorage.getItem('userMoney1'));
+    if (isNaN(c)) return 0;
+    let fl = Math.floor(c / 200000) || 1;
+    fl = Math.min(fl, 99);
+    return c * (1 - fl / 100); 
+}
+
+function calcpoints(inventory) {
+    let totalPoints = 0;
+
+    for (let item in inventory) {
+        if (army[item] !== undefined) {
+            totalPoints += inventory[item] * army[item];
+        }
+    }
+
+    return totalPoints;
+}
+
+
+function calculate(inventoryText) {
+    const inventory = parseto(inventoryText);
+    const currentTime = new Date();
+
+    const lastVisitTime = localStorage.getItem('lastVisitTime');
+    let totalEarnings = 0;
+
+    if (!lastVisitTime) {
+        localStorage.setItem('lastVisitTime', currentTime.toISOString());
+    } else {
+        // Если время последнего визита существует, то продолжаем расчет
+        const lastVisit = new Date(lastVisitTime);
+
+        const timeDifference = Math.floor((currentTime - lastVisit) / (10 * 60)); // Разница в минутах
+
+        // Подсчет заработка только если визит был не слишком коротким
+        if (timeDifference > 0) {
+            // Подсчет заработка
+            for (const item of Object.keys(earningsPerMinute)) {
+                if (inventory[item]) {
+                    const quantity = inventory[item];
+                    const perMinute = earningsPerMinute[item] || 3 / 100;
+                    totalEarnings += quantity * perMinute * timeDifference;
+                }
+            }
+        }
+    }
+
+    // Обновляем время последнего визита при каждом заходе
+    localStorage.setItem('lastVisitTime', currentTime.toISOString());
+
+    return Math.floor(totalEarnings + taxes());
+}
+
+        function deleteStrg() {
+            localStorage.removeItem('inventory')
+            localStorage.removeItem('userMoney1')
+        }
+let inv_nonparsed = localStorage.getItem('inventory')
+let inv_parsed = calculate(inv_nonparsed)
+var armyballs = parseInt(calcpoints(parsetoarmy(inv_nonparsed)));
+sendCash(parseInt(inv_parsed), parseInt(localStorage.getItem('userMoney1')) + calculate(inv_nonparsed), parsinv(inv_nonparsed))
+let money = parseInt(inv_parsed);
+localStorage.setItem('userMoney1', Number(money) + Number(localStorage.getItem('userMoney1')))
+remainingMoney = localStorage.getItem('userMoney1')
+document.getElementById('user-money').innerText = remainingMoney
+document.getElementById('armyb').innerText = armyballs;
+</script>
+</body>
+</html>
+
+</body>
+</html>
