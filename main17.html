@@ -129,74 +129,9 @@
             margin: 5px;
         }
     </style>
-    <script>
-    function createkazino() {
-    // Создаем основной контейнер
-    const itemContainer = document.createElement('div');
-    itemContainer.classList.add('item-container');
-    itemContainer.setAttribute('data-price', '4500000');
-    itemContainer.id = 'item-37';
-    itemContainer.style.background = 'linear-gradient(90deg, rgba(131,58,180,1) 0%, rgba(253,29,29,1) 50%, rgba(252,176,69,1) 100%)';
-    itemContainer.style.color = "white";
-
-    // Создаем элемент с названием
-    const itemName = document.createElement('div');
-    itemName.classList.add('item-name');
-    itemName.textContent = 'Казино';
-    
-    // Создаем контейнер для управления количеством
-    const quantityControl = document.createElement('div');
-    quantityControl.classList.add('quantity-control');
-    
-    // Создаем кнопки увеличения и уменьшения
-    const decreaseButton = document.createElement('button');
-    decreaseButton.classList.add('decrease');
-    decreaseButton.textContent = '-';
-    decreaseButton.style.backgroundColor = "black";
-    decreaseButton.style.color = "white";
-    decreaseButton.style.borderRadius = "2px"
-    decreaseButton.style.border = "1px solid white";
-    
-    const quantitySpan = document.createElement('span');
-    quantitySpan.id = 'quantity-37';
-    quantitySpan.textContent = '0';
-    
-    const increaseButton = document.createElement('button');
-    increaseButton.classList.add('increase');
-    increaseButton.textContent = '+';
-    increaseButton.style.backgroundColor = "black";
-    increaseButton.style.color = "white";
-    increaseButton.style.borderRadius = "2px"
-    increaseButton.style.border = "1px solid white";
-    
-    // Добавляем кнопки и количество в контейнер
-    quantityControl.appendChild(decreaseButton);
-    quantityControl.appendChild(quantitySpan);
-    quantityControl.appendChild(increaseButton);
-    
-    // Создаем блок с ценой
-    const price = document.createElement('div');
-    price.classList.add('price');
-    price.innerHTML = 'Цена: <span id="price-37">4500000</span> ₽';
-    
-    // Добавляем все элементы в основной контейнер
-    itemContainer.appendChild(itemName);
-    itemContainer.appendChild(quantityControl);
-    itemContainer.appendChild(price);
-    
-    // Находим див с id="kazino" и добавляем туда наш элемент
-    const kazinoDiv = document.getElementById('kazino');
-    
-    if (kazinoDiv) {
-        kazinoDiv.appendChild(itemContainer);
-    } else {
-        console.error('Элемент с id "kazino" не найден');
-    }
-}
-</script>
 </head>
 <body>
-    <h1>Добро пожаловать!!</h1>
+    <h1>Добро пожаловать!</h1>
     <img id="avatar" class="avatar" src="" alt="User Avatar">
     <div class="info">
         <h2 id="name">Имя пользователя</h2>
@@ -844,18 +779,18 @@ function updateTotalCostinv() {
     </script>
     <script>
 const earningsPerMinute = {
-    "Нефтяная вышка": 150 / 100,
-    "Завод": 45 / 100,
-    "Аэропорт": 40 / 100,
-    "Банк": 170 / 100,
-    "Ферма": 40 / 100,
-    "Горнодобывающая фабрика": 35 / 100,
-    "Торговый центр": 80 / 100,
-    "Энергетическая станция": 35 / 100,
-    "Рынок": 60 / 100,
-    "Мельница": 20 / 100,
+    "Нефтяная вышка": 25 / 1000,
+    "Завод": 30 / 1000,
+    "Аэропорт": 40 / 1000,
+    "Банк": 80 / 1000,
+    "Ферма": 40 / 1000,
+    "Горнодобывающая фабрика": 35 / 1000,
+    "Торговый центр": 70 / 100,
+    "Энергетическая станция": 35 / 1000,
+    "Рынок": 60 / 1000,
+    "Мельница": 20 / 1000,
     "Казино": 1 / 100,
-    "Плюшевый спамтон": 90 / 100
+    "Плюшевый спамтон": 10 / 100
 };
 
 const army = {
