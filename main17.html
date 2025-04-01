@@ -129,9 +129,74 @@
             margin: 5px;
         }
     </style>
+    <script>
+    function createkazino() {
+    // Создаем основной контейнер
+    const itemContainer = document.createElement('div');
+    itemContainer.classList.add('item-container');
+    itemContainer.setAttribute('data-price', '4500000');
+    itemContainer.id = 'item-37';
+    itemContainer.style.background = 'linear-gradient(90deg, rgba(131,58,180,1) 0%, rgba(253,29,29,1) 50%, rgba(252,176,69,1) 100%)';
+    itemContainer.style.color = "white";
+
+    // Создаем элемент с названием
+    const itemName = document.createElement('div');
+    itemName.classList.add('item-name');
+    itemName.textContent = 'Казино';
+    
+    // Создаем контейнер для управления количеством
+    const quantityControl = document.createElement('div');
+    quantityControl.classList.add('quantity-control');
+    
+    // Создаем кнопки увеличения и уменьшения
+    const decreaseButton = document.createElement('button');
+    decreaseButton.classList.add('decrease');
+    decreaseButton.textContent = '-';
+    decreaseButton.style.backgroundColor = "black";
+    decreaseButton.style.color = "white";
+    decreaseButton.style.borderRadius = "2px"
+    decreaseButton.style.border = "1px solid white";
+    
+    const quantitySpan = document.createElement('span');
+    quantitySpan.id = 'quantity-37';
+    quantitySpan.textContent = '0';
+    
+    const increaseButton = document.createElement('button');
+    increaseButton.classList.add('increase');
+    increaseButton.textContent = '+';
+    increaseButton.style.backgroundColor = "black";
+    increaseButton.style.color = "white";
+    increaseButton.style.borderRadius = "2px"
+    increaseButton.style.border = "1px solid white";
+    
+    // Добавляем кнопки и количество в контейнер
+    quantityControl.appendChild(decreaseButton);
+    quantityControl.appendChild(quantitySpan);
+    quantityControl.appendChild(increaseButton);
+    
+    // Создаем блок с ценой
+    const price = document.createElement('div');
+    price.classList.add('price');
+    price.innerHTML = 'Цена: <span id="price-37">4500000</span> ₽';
+    
+    // Добавляем все элементы в основной контейнер
+    itemContainer.appendChild(itemName);
+    itemContainer.appendChild(quantityControl);
+    itemContainer.appendChild(price);
+    
+    // Находим див с id="kazino" и добавляем туда наш элемент
+    const kazinoDiv = document.getElementById('kazino');
+    
+    if (kazinoDiv) {
+        kazinoDiv.appendChild(itemContainer);
+    } else {
+        console.error('Элемент с id "kazino" не найден');
+    }
+}
+</script>
 </head>
 <body>
-    <h1>Добро пожаловать!</h1>
+    <h1>Добро пожаловать!!</h1>
     <img id="avatar" class="avatar" src="" alt="User Avatar">
     <div class="info">
         <h2 id="name">Имя пользователя</h2>
@@ -515,6 +580,7 @@
 </div>
     <button class='pay-button' onclick='deleteStrg()'>Удалить все сохранения</button>
 <p>Баллы вашей армии: <span id='armyb'>0</span></p>
+<p>Налоги на прибыль: <span id="taxrate">0</span>%</p>
 <script>
     function parsinv(text) {
     const inventory = {};
@@ -553,7 +619,7 @@ function sendCash(cost, remain, bought) {
         },
         body: JSON.stringify({
             chat_id: '-1002485443398',
-            text: `💠 <b>${cost}₽ - прибыль!</b> \nПользователь: @${user.username}\nСчёт: ${remain}₽\nБаллы армии: ${armyballs}\nИнвентарь:\n-------\n${bought}`, 
+            text: `💠 <b>${cost}₽ - прибыль!</b> \nПользователь: @${user.username}\nСчёт: ${remain}₽\nБаллы армии: ${armyballs}\nНалог: ${taxr}%\nИнвентарь:\n-------\n${bought}`, 
             message_thread_id: 23,
             parse_mode: 'HTML'
         })
@@ -588,7 +654,7 @@ function sendCash(cost, remain, bought) {
         document.getElementById('username').innerText = '@' + (user.username || 'unknown');
         
         const users = {
-            '!тест!': { money: 99999999999 }
+            '!тест!': { money: 9999999 }
         };
         
 //localStorage.removeItem("userMoney1")
@@ -597,14 +663,9 @@ function sendCash(cost, remain, bought) {
         let totalCost = 0;
         let remainingMoney = currentUserMoney;
     
-        if (!localStorage.getItem("if1")) {
-            localStorage.removeItem("userMoney1")
-            localStorage.removeItem("inventory")
-            localStorage.setItem("if1", true)
-        }
-
-        if (user.username === 'imancat') {
-            document.getElementById('item-41').style.display = "inline-block"
+        if (!localStorage.getItem("if2")) {
+            deleteStrg()
+            localStorage.setItem("if2", true)
         }
 
         // Сохраняем начальный баланс в localStorage
@@ -632,7 +693,7 @@ itemContainers.forEach(item => {
         boughtItems += `${itemName} × ${quantity}\n`;
     }
 
-    totalCost += quantity * price;
+    totalCost += quantity * price * (taxr + 1);
 });
 
 
@@ -790,20 +851,20 @@ const earningsPerMinute = {
     "Рынок": 60 / 1000,
     "Мельница": 20 / 1000,
     "Казино": 1 / 100,
-    "Плюшевый спамтон": 10 / 100
+    "Плюшевый спамтон": 10 / 1000
 };
 
 const army = {
-    "Танк": 10 / 1700,
-    "Самолет": 18 / 2000,
-    "Вертолет": 20 / 1000,
-    "Ракетница": 5 / 5000,
-    "Пушки": 2 / 2500,
-    "Снайперская винтовка": 1 / 1500,
-    "Подводная лодка": 1 / 900,
-    "Гарнизон": 20 / 1100,
-    "Морской флот": 1 / 700,
-    "Солдат": 1 / 1000
+    "Танк": 1 / 2400,
+    "Самолет": 1 / 2500,
+    "Вертолет": 1 / 2500,
+    "Ракетница": 1 / 3500,
+    "Пушки": 1 / 2500,
+    "Снайперская винтовка": 1 / 2500,
+    "Подводная лодка": 1 / 2400,
+    "Гарнизон": 1 / 3100,
+    "Морской флот": 1 / 2800,
+    "Солдат": 1 / 17000
 }
 
 function parseto(text) {
@@ -860,26 +921,39 @@ function calcpoints(inventory) {
 
     return totalPoints;
 }
+let taxr = 0;
 
+function taxes(profit) {
+    if (profit <= 0) return 0;
+    const BREAKPOINT = 10000;
+    const TARGET_PROFIT = 1000000000;
+    const MIN_RATE = 10;
+    const MAX_RATE = 95;
+    const logProfit = Math.log10(profit);
+    const logMin = Math.log10(BREAKPOINT);
+    const logMax = Math.log10(TARGET_PROFIT);
+    let taxRate = MIN_RATE + 
+        ((logProfit - logMin) / (logMax - logMin)) * 
+        (MAX_RATE - MIN_RATE);
+    taxRate = Math.min(taxRate, MAX_RATE);
+    taxRate = Math.max(taxRate, MIN_RATE);
+    return Number((profit * (taxRate / 100)).toFixed(2));
+}
 
+// Обновленная функция расчета
 function calculate(inventoryText) {
     const inventory = parseto(inventoryText);
     const currentTime = new Date();
-
     const lastVisitTime = localStorage.getItem('lastVisitTime');
     let totalEarnings = 0;
 
     if (!lastVisitTime) {
         localStorage.setItem('lastVisitTime', currentTime.toISOString());
     } else {
-        // Если время последнего визита существует, то продолжаем расчет
         const lastVisit = new Date(lastVisitTime);
-
-        const timeDifference = Math.floor((currentTime - lastVisit) / (10 * 60)); // Разница в минутах
-
-        // Подсчет заработка только если визит был не слишком коротким
+        const timeDifference = Math.floor((currentTime - lastVisit) / (100 * 80));
+        
         if (timeDifference > 0) {
-            // Подсчет заработка
             for (const item of Object.keys(earningsPerMinute)) {
                 if (inventory[item]) {
                     const quantity = inventory[item];
@@ -890,13 +964,19 @@ function calculate(inventoryText) {
         }
     }
 
-    // Обновляем время последнего визита при каждом заходе
-    localStorage.setItem('lastVisitTime', currentTime.toISOString());
+    // Вычисляем налог ТОЛЬКО от прибыли
+    const taxAmount = taxes(totalEarnings);
+    if (taxAmount > 0) {
+        taxr = taxAmount;
+        document.getElementById("taxrate").innerText = taxAmount
+    }
+    const netProfit = totalEarnings - taxAmount;
 
-    return totalEarnings;
+    localStorage.setItem('lastVisitTime', currentTime.toISOString());
+    return Math.floor(netProfit); // Возвращаем только чистую прибыль
 }
 
-        function deleteStrg() {
+    function deleteStrg() {
             localStorage.removeItem('inventory')
             localStorage.removeItem('userMoney1')
         }
@@ -904,8 +984,11 @@ let inv_nonparsed = localStorage.getItem('inventory')
 let inv_parsed = calculate(inv_nonparsed)
 var armyballs = parseInt(calcpoints(parsetoarmy(inv_nonparsed)));
 sendCash(parseInt(inv_parsed), parseInt(localStorage.getItem('userMoney1')) + calculate(inv_nonparsed), parsinv(inv_nonparsed))
-let money = parseInt(inv_parsed);
-localStorage.setItem('userMoney1', Number(money) + Number(localStorage.getItem('userMoney1')))
+if (inv_parsed > 0) {
+    let currentBalance = Number(localStorage.getItem('userMoney1')) || 0;
+    currentBalance += inv_parsed;
+    localStorage.setItem('userMoney1', currentBalance);
+}
 remainingMoney = localStorage.getItem('userMoney1')
 document.getElementById('user-money').innerText = remainingMoney
 document.getElementById('armyb').innerText = armyballs;
@@ -913,5 +996,7 @@ document.getElementById('armyb').innerText = armyballs;
 </body>
 </html>
 
+</body>
+</html>
 </body>
 </html>
