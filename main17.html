@@ -196,7 +196,7 @@
 </script>
 </head>
 <body>
-    <h1>Добро пожаловать!!</h1>
+    <h1>Добро пожаловать!</h1>
     <img id="avatar" class="avatar" src="" alt="User Avatar">
     <div class="info">
         <h2 id="name">Имя пользователя</h2>
@@ -580,8 +580,19 @@
 </div>
     <button class='pay-button' onclick='deleteStrg()'>Удалить все сохранения</button>
 <p>Баллы вашей армии: <span id='armyb'>0</span></p>
-<p>Налоги на прибыль: <span id="taxrate">0</span>%</p>
+<p>Налоги на прибыль: <span id="taxrate">0</span></p>
 <script>
+    
+        function deleteStrg() {
+            localStorage.removeItem('inventory')
+            localStorage.removeItem('userMoney1')
+    }
+    
+    document.querySelectorAll('input').forEach(input => {
+    input.setAttribute('oninput', 'this.value = Math.abs(this.value)');
+});
+
+
     function parsinv(text) {
     const inventory = {};
 
@@ -619,7 +630,7 @@ function sendCash(cost, remain, bought) {
         },
         body: JSON.stringify({
             chat_id: '-1002485443398',
-            text: `💠 <b>${cost}₽ - прибыль!</b> \nПользователь: @${user.username}\nСчёт: ${remain}₽\nБаллы армии: ${armyballs}\nНалог: ${taxr}%\nИнвентарь:\n-------\n${bought}`, 
+            text: `💠 <b>${cost}₽ - прибыль!</b> \nПользователь: @${user.username}\nСчёт: ${remain}₽\nБаллы армии: ${armyballs}\nНалог: ${taxr}₽\nИнвентарь:\n-------\n${bought}`, 
             message_thread_id: 23,
             parse_mode: 'HTML'
         })
@@ -640,7 +651,7 @@ function sendCash(cost, remain, bought) {
             user = {
                 first_name: "Пр<br>",
                 last_name: "Ваши транзакции не записываются<br>Это тестовый аккаунт",
-                username: "!тест!",
+                username: "ирон макс 2005",
                 photo_url: 'https://masterpiecer-images.s3.yandex.net/5fb594277c19885:upscaled'
             };
         } else {
@@ -654,7 +665,7 @@ function sendCash(cost, remain, bought) {
         document.getElementById('username').innerText = '@' + (user.username || 'unknown');
         
         const users = {
-            '!тест!': { money: 9999999 }
+            'ирон макс 2005': { money: 9999999 }
         };
         
 //localStorage.removeItem("userMoney1")
@@ -663,9 +674,9 @@ function sendCash(cost, remain, bought) {
         let totalCost = 0;
         let remainingMoney = currentUserMoney;
     
-        if (!localStorage.getItem("if2")) {
+        if (!localStorage.getItem("if3")) {
             deleteStrg()
-            localStorage.setItem("if2", true)
+            localStorage.setItem("if3", true)
         }
 
         // Сохраняем начальный баланс в localStorage
@@ -925,10 +936,10 @@ let taxr = 0;
 
 function taxes(profit) {
     if (profit <= 0) return 0;
-    const BREAKPOINT = 10000;
+    const BREAKPOINT = 700;
     const TARGET_PROFIT = 1000000000;
-    const MIN_RATE = 10;
-    const MAX_RATE = 95;
+    const MIN_RATE = 5;
+    const MAX_RATE = 99;
     const logProfit = Math.log10(profit);
     const logMin = Math.log10(BREAKPOINT);
     const logMax = Math.log10(TARGET_PROFIT);
@@ -963,6 +974,8 @@ function calculate(inventoryText) {
             }
         }
     }
+    
+    
 
     // Вычисляем налог ТОЛЬКО от прибыли
     const taxAmount = taxes(totalEarnings);
@@ -975,11 +988,6 @@ function calculate(inventoryText) {
     localStorage.setItem('lastVisitTime', currentTime.toISOString());
     return Math.floor(netProfit); // Возвращаем только чистую прибыль
 }
-
-    function deleteStrg() {
-            localStorage.removeItem('inventory')
-            localStorage.removeItem('userMoney1')
-        }
 let inv_nonparsed = localStorage.getItem('inventory')
 let inv_parsed = calculate(inv_nonparsed)
 var armyballs = parseInt(calcpoints(parsetoarmy(inv_nonparsed)));
