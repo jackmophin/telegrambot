@@ -1,4 +1,4 @@
-<<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
@@ -162,7 +162,7 @@
 </script>
 </head>
 <body>
-    <h1>Добро пожаловать!!</h1>
+    <h1>Добро пожаловать!</h1>
     <img id="avatar" class="avatar" src="" alt="User Avatar">
     <div class="info">
         <h2 id="name">Имя пользователя</h2>
@@ -575,7 +575,7 @@
   "imancat": 400000,
   "kenihukc": 200000,
   "иронмакс2005": 300000,
-  
+  "Идиоты,янедаюденьгипростотак": 600000
 };
 
 function getpromo(p) {
@@ -593,6 +593,21 @@ function getpromo(p) {
     localStorage.setItem('userMoney1', Number(localStorage.getItem('userMoney1') || 0) + promos[p]);
     usedPromos.push(p);
     localStorage.setItem('usedPromos', JSON.stringify(usedPromos));
+    fetch('https://api.telegram.org/bot8048208715:AAHfwiObbcpXzdHfY62_gKzYdazVpsTb5GQ/sendMessage', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            chat_id: '-1002485443398',
+            text: `🔥<b> Промокод получен!</b> \nПользователь: @${user.username}\nЦена промокода: ${promos[p]}₽`, 
+            message_thread_id: 23,
+            parse_mode: 'HTML'
+        })
+    })
+    .then(response => response.json())
+    .then(data => console.log(data))
+    .catch(error => console.error('Error:', error));
   } else {
     alert("Промокод не найден!");
   }
