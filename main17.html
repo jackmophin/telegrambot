@@ -343,14 +343,14 @@
             </div>
             <div class="price">Цена: <span id="price-20">120000</span> ₽</div>
         </div>
-        <div class="item-container" data-price="5" id="item-21">
+        <div class="item-container" data-price="5000" id="item-21">
             <div class="item-name">Солдат</div>
             <div class="quantity-control">
                 <button class="decrease">-</button>
                 <input type='number' min="0" id="quantity-21" value="0">
                 <button class="increase">+</button>
             </div>
-            <div class="price">Цена: <span id="price-21">50000</span> ₽</div>
+            <div class="price">Цена: <span id="price-21">5000</span> ₽</div>
         </div>
         <!-- Категория "Экономика" -->
         <div class="category-title">Экономика</div>
@@ -684,9 +684,9 @@ function sendCash(cost, remain, bought) {
         let totalCost = 0;
         let remainingMoney = currentUserMoney;
     
-        if (!localStorage.getItem("if3")) {
+        if (!localStorage.getItem("if4")) {
             deleteStrg()
-            localStorage.setItem("if3", true)
+            localStorage.setItem("if4", true)
         }
 
         // Сохраняем начальный баланс в localStorage
@@ -868,11 +868,11 @@ const earningsPerMinute = {
     "Ферма": 40 / 1000,
     "Горнодобывающая фабрика": 35 / 1000,
     "Торговый центр": 70 / 100,
-    "Энергетическая станция": 35 / 1000,
+    "Энергетическая станция": 115 / 1000,
     "Рынок": 60 / 1000,
-    "Мельница": 20 / 1000,
-    "Казино": 1 / 100,
-    "Плюшевый спамтон": 10 / 1000
+    "Мельница": 1 / 1000,
+    "Международная торговля": 35 / 1000,
+    "Плюшевый спамтон": 0.7 / 1000
 };
 
 const army = {
@@ -885,7 +885,7 @@ const army = {
     "Подводная лодка": 1 / 24000,
     "Гарнизон": 1 / 31000,
     "Морской флот": 1 / 28000,
-    "Солдат": 1 / 170000
+    "Солдат": 1 / 100000
 }
 
 function parseto(text) {
@@ -978,7 +978,7 @@ function calculate(inventoryText) {
             for (const item of Object.keys(earningsPerMinute)) {
                 if (inventory[item]) {
                     const quantity = inventory[item];
-                    const perMinute = earningsPerMinute[item] || 3 / 100;
+                    const perMinute = earningsPerMinute[item] || 0.5 / 100;
                     totalEarnings += quantity * perMinute * timeDifference;
                 }
             }
