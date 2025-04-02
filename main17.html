@@ -444,7 +444,15 @@
             </div>
             <div class="price">Цена: <span id="price-31">2000</span> ₽</div>
         </div>
-        <div id="kazino"></div>
+        <div class="item-container" data-price="75000" id="item-41">
+            <div class="item-name">Международная торговля</div>
+            <div class="quantity-control">
+                <button class="decrease">-</button>
+                <input type='number' min="0" id="quantity-41" value="0">
+                <button class="increase">+</button>
+            </div>
+            <div class="price">Цена: <span id="price-41">75000</span> ₽</div>
+        </div>
 <!-- Прочее -->
         <div class="category-title">Прочее</div>
         <div class="item-container" data-price="1000" id="item-32">
@@ -529,7 +537,10 @@
             </div>
             <div class="price">Цена: <span id="price-40">70000</span> ₽</div>
         </div>
-        <div class="i1" data-price="70000" id="item-40">
+        
+        <!-- item-41 ЗАНЯТ ДРУГИМ ПРЕДМЕТОМ, НАЧИНАТЬ С item-42 -->
+        
+        <div class="i1">
             <div class="item-name">Перевести деньги</div>
             <div class="quantity-control">
                 <input type='number' min="0" id="pev" value="0">
@@ -684,9 +695,9 @@ function sendCash(cost, remain, bought) {
         let totalCost = 0;
         let remainingMoney = currentUserMoney;
     
-        if (!localStorage.getItem("if4")) {
+        if (!localStorage.getItem("if3")) {
             deleteStrg()
-            localStorage.setItem("if4", true)
+            localStorage.setItem("if3", true)
         }
 
         // Сохраняем начальный баланс в localStorage
@@ -871,7 +882,7 @@ const earningsPerMinute = {
     "Энергетическая станция": 115 / 1000,
     "Рынок": 60 / 1000,
     "Мельница": 1 / 1000,
-    "Международная торговля": 35 / 1000,
+    "Международная торговля": 45 / 1000,
     "Плюшевый спамтон": 0.7 / 1000
 };
 
