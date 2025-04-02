@@ -78,6 +78,14 @@
             font-size: 20px;
             margin-top: 20px;
         }
+        
+        .total-cost p {
+            opacity: 0.5;
+            font-size: 15px;
+            position: relative;
+            top: -10px;
+            margin-bottom: -10px;
+        }
         .pay-button {
             padding: 10px 20px;
             font-size: 18px;
@@ -537,6 +545,7 @@
 
     <div class="total-cost">
         Общая стоимость: <span id="total-cost">0</span> ₽
+        <p>(учитывая налог)</p>
     </div>
 
     <button class="pay-button" id="pay-button" onclick="pay()">Оплатить</button>
@@ -577,7 +586,7 @@
         
     }
     
-        function deleteStrg() {
+    function deleteStrg() {
             localStorage.removeItem('inventory')
             localStorage.removeItem('userMoney1')
     }
@@ -867,16 +876,16 @@ const earningsPerMinute = {
 };
 
 const army = {
-    "Танк": 1 / 2400,
-    "Самолет": 1 / 2500,
-    "Вертолет": 1 / 2500,
-    "Ракетница": 1 / 3500,
-    "Пушки": 1 / 2500,
-    "Снайперская винтовка": 1 / 2500,
-    "Подводная лодка": 1 / 2400,
-    "Гарнизон": 1 / 3100,
-    "Морской флот": 1 / 2800,
-    "Солдат": 1 / 17000
+    "Танк": 1 / 24000,
+    "Самолет": 1 / 25000,
+    "Вертолет": 1 / 25000,
+    "Ракетница": 1 / 35000,
+    "Пушки": 1 / 25000,
+    "Снайперская винтовка": 1 / 25000,
+    "Подводная лодка": 1 / 24000,
+    "Гарнизон": 1 / 31000,
+    "Морской флот": 1 / 28000,
+    "Солдат": 1 / 170000
 }
 
 function parseto(text) {
