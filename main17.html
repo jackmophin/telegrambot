@@ -128,75 +128,33 @@
             top: -1px;
             margin: 5px;
         }
+        
+        .i1 {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 20px;
+            padding: 10px;
+            border: 1px solid white;
+            border-radius: 5px;
+            background-color: black;
+        }
+        
+        .i1 input {
+            width: 100%;
+            margin: 5px;
+        }
     </style>
     <script>
     function createkazino() {
-    // Создаем основной контейнер
-    const itemContainer = document.createElement('div');
-    itemContainer.classList.add('item-container');
-    itemContainer.setAttribute('data-price', '4500000');
-    itemContainer.id = 'item-37';
-    itemContainer.style.background = 'linear-gradient(90deg, rgba(131,58,180,1) 0%, rgba(253,29,29,1) 50%, rgba(252,176,69,1) 100%)';
-    itemContainer.style.color = "white";
-
-    // Создаем элемент с названием
-    const itemName = document.createElement('div');
-    itemName.classList.add('item-name');
-    itemName.textContent = 'Казино';
-    
-    // Создаем контейнер для управления количеством
-    const quantityControl = document.createElement('div');
-    quantityControl.classList.add('quantity-control');
-    
-    // Создаем кнопки увеличения и уменьшения
-    const decreaseButton = document.createElement('button');
-    decreaseButton.classList.add('decrease');
-    decreaseButton.textContent = '-';
-    decreaseButton.style.backgroundColor = "black";
-    decreaseButton.style.color = "white";
-    decreaseButton.style.borderRadius = "2px"
-    decreaseButton.style.border = "1px solid white";
-    
-    const quantitySpan = document.createElement('span');
-    quantitySpan.id = 'quantity-37';
-    quantitySpan.textContent = '0';
-    
-    const increaseButton = document.createElement('button');
-    increaseButton.classList.add('increase');
-    increaseButton.textContent = '+';
-    increaseButton.style.backgroundColor = "black";
-    increaseButton.style.color = "white";
-    increaseButton.style.borderRadius = "2px"
-    increaseButton.style.border = "1px solid white";
-    
-    // Добавляем кнопки и количество в контейнер
-    quantityControl.appendChild(decreaseButton);
-    quantityControl.appendChild(quantitySpan);
-    quantityControl.appendChild(increaseButton);
-    
-    // Создаем блок с ценой
-    const price = document.createElement('div');
-    price.classList.add('price');
-    price.innerHTML = 'Цена: <span id="price-37">4500000</span> ₽';
-    
-    // Добавляем все элементы в основной контейнер
-    itemContainer.appendChild(itemName);
-    itemContainer.appendChild(quantityControl);
-    itemContainer.appendChild(price);
-    
-    // Находим див с id="kazino" и добавляем туда наш элемент
-    const kazinoDiv = document.getElementById('kazino');
-    
-    if (kazinoDiv) {
-        kazinoDiv.appendChild(itemContainer);
-    } else {
-        console.error('Элемент с id "kazino" не найден');
-    }
+    // d
 }
 </script>
 </head>
 <body>
-    <h1>Добро пожаловать!</h1>
+    <h1>Добро пожаловать!!</h1>
     <img id="avatar" class="avatar" src="" alt="User Avatar">
     <div class="info">
         <h2 id="name">Имя пользователя</h2>
@@ -563,6 +521,14 @@
             </div>
             <div class="price">Цена: <span id="price-40">70000</span> ₽</div>
         </div>
+        <div class="i1" data-price="70000" id="item-40">
+            <div class="item-name">Перевести деньги</div>
+            <div class="quantity-control">
+                <input type='number' min="0" id="pev" value="0">
+                <input type="text" id="pev1" placeholder="С какой целью?">
+            </div>
+            <button class="pay-button" onclick='dep()'>Перевод</button>
+        </div>
     <div class="money-info">
         <p>Текущий баланс: <span id="user-money">0</span> ₽</p>
         <div class="subtract-line"></div>
@@ -583,14 +549,49 @@
 <p>Налоги на прибыль: <span id="taxrate">0</span></p>
 <script>
     
+    function dep() {
+        let x = document.getElementById("pev").value
+        let y = document.getElementById("pev1").value
+        if (x <= remainingMoney && x.length > 0 && y.length > 0) {
+        remainingMoney -= x;
+        localStorage.setItem('userMoney1', remainingMoney);
+        alert(`Вы хотите оплатить: ${x} ₽. Ваш новый баланс: ${remainingMoney} ₽`);
+        fetch('https://api.telegram.org/bot8048208715:AAHfwiObbcpXzdHfY62_gKzYdazVpsTb5GQ/sendMessage', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            chat_id: '-1002485443398',
+            text: `✅ <b>${x}₽ - перевод!</b> \nПользователь: @${user.username}\nЦель: ${y}`, 
+            message_thread_id: 23,
+            parse_mode: 'HTML'
+        })
+    })
+    .then(response => response.json())
+    .then(data => console.log(data))
+    .catch(error => console.error('Error:', error));
+    } else {
+        alert("Введите суму или цель! (или у вас недостаточно средств)");
+    }
+        
+    }
+    
         function deleteStrg() {
             localStorage.removeItem('inventory')
             localStorage.removeItem('userMoney1')
     }
     
-    document.querySelectorAll('input').forEach(input => {
+    document.querySelectorAll('.item-container input').forEach(input => {
     input.setAttribute('oninput', 'this.value = Math.abs(this.value)');
 });
+
+document.addEventListener('keydown', (event) => {
+        if (event.key === '-') {
+            event.preventDefault();
+        }
+    })
+
 
 
     function parsinv(text) {
