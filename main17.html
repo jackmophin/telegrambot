@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<<!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
@@ -567,7 +567,37 @@
     <button class='pay-button' onclick='deleteStrg()'>Удалить все сохранения</button>
 <p>Баллы вашей армии: <span id='armyb'>0</span></p>
 <p>Налоги на прибыль: <span id="taxrate">0</span></p>
+<input type='text' id="promo" style="width: 90%;" placeholder="Ввод промокода"><button onclick="getpromo(document.getElementById('promo').value)" style="border: 1px solid white; background-color: black; color: white; border-radius: 5px; padding: 15px; margin: 15px;">Получить</button>
 <script>
+    
+    const promos = {
+  "2025": 1000000,
+  "imancat": 400000,
+  "kenihukc": 200000,
+  "иронмакс2005": 300000,
+  
+};
+
+function getpromo(p) {
+  if (typeof p !== 'string') p = String(p);
+  p = p.trim().replace(/\s+/g, '').toLowerCase();
+  const usedPromos = JSON.parse(localStorage.getItem('usedPromos') || '[]');
+
+  if (usedPromos.includes(p)) {
+    alert("Этот промокод уже был использован!");
+    return;
+  }
+
+  if (promos[p]) {
+    alert(`Вы получили ${promos[p]}! Перезайдите в бота для получения!`);
+    localStorage.setItem('userMoney1', Number(localStorage.getItem('userMoney1') || 0) + promos[p]);
+    usedPromos.push(p);
+    localStorage.setItem('usedPromos', JSON.stringify(usedPromos));
+  } else {
+    alert("Промокод не найден!");
+  }
+}
+
     
     function dep() {
         let x = document.getElementById("pev").value
@@ -600,6 +630,7 @@
     function deleteStrg() {
             localStorage.removeItem('inventory')
             localStorage.removeItem('userMoney1')
+            localStorage.removeItem('usedPromos')
     }
     
     document.querySelectorAll('.item-container input').forEach(input => {
@@ -882,22 +913,22 @@ const earningsPerMinute = {
     "Энергетическая станция": 115 / 1000,
     "Рынок": 60 / 1000,
     "Мельница": 1 / 1000,
-    "Международная торговля": 45 / 1000,
+    "Международная торговля": 35 / 1000,
     "Плюшевый спамтон": 0.7 / 1000
 };
 
 const army = {
-    "Танк": 1 / 24000,
-    "Самолет": 1 / 25000,
-    "Вертолет": 1 / 25000,
-    "Ракетница": 1 / 35000,
-    "Пушки": 1 / 25000,
-    "Снайперская винтовка": 1 / 25000,
-    "Подводная лодка": 1 / 24000,
-    "Гарнизон": 1 / 31000,
-    "Морской флот": 1 / 28000,
-    "Солдат": 1 / 100000
-}
+    "Танк": 5, 
+    "Самолет": 15,      
+    "Вертолет": 3,      
+    "Ракетница": 1,     
+    "Пушки": 2,         
+    "Снайперская винтовка": 5,  
+    "Подводная лодка": 6,     
+    "Гарнизон": 8,      
+    "Морской флот": 12, 
+    "Солдат": 1 
+};
 
 function parseto(text) {
     text = String(text);
