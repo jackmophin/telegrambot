@@ -5,6 +5,85 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Telegram Web App</title>
     <style>
+    
+    .company-actions {
+    margin-top: 10px;
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+}
+
+.company-btn {
+    padding: 6px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    border: 1px solid;
+    background: black;
+    color: white;
+}
+
+.fund-btn {
+    border-color: #4CAF50;
+}
+
+.delete-btn {
+    border-color: #ff4444;
+}
+    
+    #companiesContainer {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 15px;
+        justify-content: center;
+    }
+    
+    .company-card {
+        width: 280px;
+        padding: 15px;
+        border: 1px solid #444;
+        border-radius: 8px;
+        background: #111;
+        border: 1px solid white;
+    }
+    
+    #total-companies-profit {
+        margin-top: 20px;
+        font-size: 1.2em;
+        padding: 10px;
+        border-radius: 5px;
+    }
+    
+.profit-up::before {
+    content: '▲';
+    color: #4CAF50;
+    margin-right: 5px;
+}
+
+.profit-down::before {
+    content: '▼';
+    color: #ff4444;
+    margin-right: 5px;
+}
+
+.profit-text {
+    font-weight: bold;
+}
+
+.company-status {
+    font-weight: bold;
+    color: #4CAF50;
+}
+.company-status.closed {
+    color: #ff4444;
+}
+.profit-up {
+    color: #4CAF50;
+}
+.profit-down {
+    color: #ff4444;
+}
+</style>
+    <style>
 @font-face {
     font-family: 'Product Sans';
     src: url('https://jackmophin.github.io/local/fonts/productsans.ttf') format('truetype');
@@ -155,14 +234,9 @@
             margin: 5px;
         }
     </style>
-    <script>
-    function createkazino() {
-    // d
-}
-</script>
 </head>
 <body>
-    <h1>Добро пожаловать!1</h1>
+    <h1>Добро пожаловать!</h1>
     <img id="avatar" class="avatar" src="" alt="User Avatar">
     <div class="info">
         <h2 id="name">Имя пользователя</h2>
@@ -560,6 +634,280 @@
     </div>
 
     <button class="pay-button" id="pay-button" onclick="pay()">Оплатить</button>
+    
+<div id="companySection">
+    <div class="category-title">Ваши компании</div>
+    <div id="companiesContainer" class="inventory"></div>
+    <button class="pay-button" onclick="showCompanyForm()">Основать компанию (5,000₽)</button>
+    <div id="companyForm" style="display:none; margin-top:15px;">
+        <div class="i1">
+            <input type="text" id="companyName" placeholder="Название корпорации" style="width:90%">
+            <input type="url" id="companyAvatar" placeholder="Ссылка на логотип" style="width:90%">
+            <input type="number" id="companyBudget" placeholder="Стартовый капитал" min="10000" style="width:90%">
+            <button class="pay-button" onclick="createCompany()">Зарегистрировать</button>
+        </div>
+    </div>
+</div>
+
+<script>
+// Глобальные объявления
+const COMPANY = {
+    KEY: 'userCompanies',
+    CREATION_COST: 5000,
+    MIN_BUDGET: 10000,
+    BASE_CHANCE: 0.001,
+    PROFIT_RATE: 0.03,
+    LOSS_RATE: 0.05
+};
+
+// Инициализация компаний
+function initCompanies() {
+    if(!localStorage.getItem(COMPANY.KEY)) {
+        localStorage.setItem(COMPANY.KEY, JSON.stringify([]));
+    }
+}
+
+// Показ формы создания компании
+function showCompanyForm() {
+    try {
+        const currentBalance = Number(localStorage.getItem('userMoney1')) || 0;
+        const companyForm = document.getElementById("companyForm");
+        
+        if (!companyForm) throw new Error('Форма компании не найдена');
+        
+        if(currentBalance >= COMPANY.CREATION_COST) {
+            companyForm.style.display = "block";
+            document.getElementById("companyName").value = '';
+            document.getElementById("companyAvatar").value = '';
+            document.getElementById("companyBudget").value = '';
+        } else {
+            alert(`Требуется ${COMPANY.CREATION_COST.toLocaleString()}₽! Ваш баланс: ${currentBalance.toLocaleString()}₽`);
+            companyForm.style.display = "none";
+        }
+    } catch(error) {
+        console.error('Ошибка:', error);
+        alert('Ошибка при открытии формы');
+    }
+}
+
+// Создание компании
+function createCompany() {
+    try {
+        const companyName = document.getElementById("companyName").value.trim();
+        const companyBudget = parseInt(document.getElementById("companyBudget").value);
+        const companyAvatar = document.getElementById("companyAvatar").value;
+
+        // Валидация данных
+        if(!companyName || !companyAvatar || isNaN(companyBudget)) {
+            alert("Заполните все поля корректно!");
+            return;
+        }
+        
+        if(companyBudget < COMPANY.MIN_BUDGET) {
+            alert(`Минимальный бюджет: ${COMPANY.MIN_BUDGET.toLocaleString()}₽!`);
+            return;
+        }
+
+        const companies = JSON.parse(localStorage.getItem(COMPANY.KEY)) || [];
+        if(companies.some(c => c.name.toLowerCase() === companyName.toLowerCase())) {
+            alert("Компания с таким именем уже существует!");
+            return;
+        }
+
+        if(remainingMoney < COMPANY.CREATION_COST) {
+            alert("Недостаточно средств!");
+            return;
+        }
+
+        // Создание компании
+        const newCompany = {
+            id: Date.now(),
+            name: companyName,
+            avatar: companyAvatar,
+            budget: companyBudget,
+            initialBudget: companyBudget,
+            lastUpdate: Date.now(),
+            lastProfit: 0
+        };
+
+        // Обновление баланса
+        remainingMoney -= COMPANY.CREATION_COST;
+        localStorage.setItem('userMoney1', remainingMoney);
+        document.getElementById('user-money').textContent = remainingMoney;
+
+        // Сохранение данных
+        companies.push(newCompany);
+        localStorage.setItem(COMPANY.KEY, JSON.stringify(companies));
+        updateCompanies();
+        document.getElementById("companyForm").style.display = "none";
+
+    } catch(error) {
+        console.error('Ошибка создания компании:', error);
+        alert('Ошибка при создании компании');
+    }
+}
+
+function updateCompanies() {
+    const now = new Date();
+    const lastVisitISO = localStorage.getItem('lastVisitTime');
+    let totalTaxes = 0; // Добавляем счетчик налогов
+
+    // Получаем время последнего визита 
+    let lastVisitTime = now;
+    if(lastVisitISO) {
+        lastVisitTime = new Date(lastVisitISO);
+        if(isNaN(lastVisitTime.getTime())) {
+            lastVisitTime = now;
+        }
+    }
+
+    const companies = JSON.parse(localStorage.getItem(COMPANY.KEY) || '[]');
+    let totalProfit = 0;
+    let removedCompanies = 0;
+
+    // 1. Удаление компаний с бюджетом < 2500
+    const validCompanies = companies.filter(company => {
+        if(company.budget < 2500) {
+            removedCompanies++;
+            return false;
+        }
+        return true;
+    });
+
+    // 2. Расчет интервалов
+    const secondsPassed = Math.floor((now - lastVisitTime) / 27);
+    const intervals = secondsPassed;
+
+    // 3. Обновление компаний с налогообложением
+    if(intervals > 0) {
+        validCompanies.forEach(company => {
+            const initialBudget = company.budget;
+            
+            // Генерируем прибыль
+            let grossProfit = 0;
+            for(let i = 0; i < intervals; i++) {
+                const change = company.budget * (Math.random() * 0.004 - 0.002);
+                grossProfit += change;
+            }
+            
+            // Рассчитываем налоги
+            const taxAmount = taxes(Math.max(0, grossProfit)); // Налог только с положительной прибыли
+            const netProfit = grossProfit - taxAmount;
+            
+            company.budget = Math.max(0, company.budget + netProfit);
+            company.lastProfit = netProfit; // Сохраняем чистую прибыль
+            
+            totalProfit += netProfit;
+            totalTaxes += taxAmount; // Аккумулируем налоги
+        });
+    }
+
+    // 4. Обновление данных
+    remainingMoney = Number(remainingMoney) + Math.floor(totalProfit) + Math.floor(totalTaxes) - (removedCompanies * 500);
+    localStorage.setItem('userMoney1', remainingMoney);
+    document.getElementById('user-money').textContent = remainingMoney;
+    
+    // Обновляем отображение налогов
+    document.getElementById("taxrate").textContent = 
+        `С компаний: ${Math.floor(totalTaxes).toLocaleString()}₽`;
+
+    localStorage.setItem('lastVisitTime', now.toISOString());
+    localStorage.setItem(COMPANY.KEY, JSON.stringify(validCompanies));
+    
+    renderCompanies();
+}
+
+function renderCompanies() {
+    const container = document.getElementById('companiesContainer');
+    const companies = JSON.parse(localStorage.getItem(COMPANY.KEY)) || [];
+    let totalProfitAll = 0;
+    
+    // Удаляем предыдущий элемент общей прибыли
+    const existingProfitElement = document.getElementById('total-companies-profit');
+    if(existingProfitElement) {
+        existingProfitElement.remove();
+    }
+
+    // Генерируем новый контент
+    container.innerHTML = companies.map(company => {
+        const totalProfit = company.budget - company.initialBudget;
+        totalProfitAll += totalProfit;
+        
+        const statusClass = totalProfit >= 0 ? 'profit-up' : 'profit-down';
+        const statusText = company.budget > 0 ? 'Активна' : 'Банкрот';
+        
+        const lastProfit = company.lastProfit 
+            ? `Последняя прибыль: ${company.lastProfit >= 0 ? '+' : ''}${company.lastProfit.toFixed(2)}₽<br>`
+            : '';
+
+        return `
+            <div class="inventory-item">
+                <h3>${company.name}</h3>
+                <img src="${company.avatar}" style="width:60px; height:60px; border-radius:8px;">
+                <p>Капитал: ${Math.floor(company.budget).toLocaleString()}₽</p>
+                <p class="${statusClass}">
+                    ${lastProfit}
+                    Общая прибыль: ${totalProfit >= 0 ? '+' : ''}${totalProfit.toFixed(2)}₽
+                </p>
+                <p>Статус: <span class="${company.budget > 0 ? 'profit-up' : 'profit-down'}">
+                    ${statusText}
+                </span></p>
+                <div class="company-actions">
+                    <button class="company-btn fund-btn" onclick="fundCompany(${company.id})">Финансировать</button>
+                    <button class="company-btn delete-btn" onclick="deleteCompany(${company.id})">Удалить</button>
+                </div>
+            </div>
+        `;
+    }).join('');
+
+    // Создаем и добавляем новый элемент общей прибыли
+    const totalProfitElement = document.createElement('div');
+    totalProfitElement.id = 'total-companies-profit';
+    totalProfitElement.textContent = `Общая прибыль: ${totalProfitAll.toLocaleString()}₽`;
+    totalProfitElement.style.color = totalProfitAll >= 0 ? '#4CAF50' : '#ff4444';
+    totalProfitElement.style.marginTop = '20px';
+    totalProfitElement.style.padding = '10px';
+    
+    container.parentNode.insertBefore(totalProfitElement, container.nextSibling);
+}
+
+function fundCompany(companyId) {
+    const amount = prompt('Введите сумму финансирования:');
+    if(!amount || isNaN(amount)) return;
+    
+    const companies = JSON.parse(localStorage.getItem(COMPANY.KEY));
+    const company = companies.find(c => c.id === companyId);
+    const userBalance = Number(localStorage.getItem('userMoney1'));
+    
+    if(amount > userBalance) {
+        alert('Недостаточно средств!');
+        return ;
+    }
+        company.budget += Number(amount);
+        localStorage.setItem('userMoney1', userBalance - amount);
+        localStorage.setItem(COMPANY.KEY, JSON.stringify(companies));
+        updateCompanies();
+}
+
+// Функция удаления компании
+function deleteCompany(companyId) {
+    if(!confirm('Вы уверены, что хотите удалить компанию? Это действие нельзя отменить!')) return;
+    
+    const companies = JSON.parse(localStorage.getItem(COMPANY.KEY));
+    const filtered = companies.filter(c => c.id !== companyId);
+    
+    localStorage.setItem(COMPANY.KEY, JSON.stringify(filtered));
+    updateCompanies();
+    alert('Компания успешно удалена!');
+}
+
+// Инициализация
+document.addEventListener('DOMContentLoaded', () => {
+    initCompanies();
+    updateCompanies();
+    document.getElementById('companyBudget').min = COMPANY.MIN_BUDGET;
+});
+</script>
 <div class="category-title">Инвентарь</div>
 <div id="inventory" class="inventory">
     <p id='inv'>Ваши покупки появятся здесь.</p>
@@ -570,7 +918,7 @@
 <input type='text' id="promo" style="width: 90%;" placeholder="Ввод промокода"><button onclick="getpromo(document.getElementById('promo').value)" style="border: 1px solid white; background-color: black; color: white; border-radius: 5px; padding: 15px; margin: 15px;">Получить</button>
 <script>
     
-    const promos = {
+const promos = {
   "2025": 1000000,
   "imancat": 400000,
   "kenihukc": 200000,
@@ -649,6 +997,7 @@ function getpromo(p) {
             localStorage.removeItem('inventory')
             localStorage.removeItem('userMoney1')
             localStorage.removeItem('usedPromos')
+            localStorage.removeItem('userCompanies')
     }
     
     document.querySelectorAll('.item-container input').forEach(input => {
@@ -716,7 +1065,7 @@ function sendCash(cost, remain, bought) {
         let user;
 
         // Проверяем, если приложение не используется в Telegram Web App, создаём тестового пользователя
-        if (false) {
+        if (true) {
             //localStorage.setItem('userMoney', 5);
             user = {
                 first_name: "Пр<br>",
