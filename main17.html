@@ -3,7 +3,28 @@
 <head>
     <script>
         // CONFIG
-        
+window.tkn = atob(`VFd`+`aY0`+`RWb`+`GhUd1J`+`MW`+`VU4`+`WEtY`+`TThJ`+`eTlj`+`QURNQ`+`kpEQk`+`VVa`+`FV`+`BYW`+`lBN`+`lFDd`+`3hV`+`Rm9t`+`SkdR`+`dU96`+`UV`+`JYZ`+`3`+`dDQk`+`E9`+`PQ`+`==`);
+
+
+window.xr = function(_) {
+    let $ = "uVh5kQw3zT",
+        B = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/".split(""),
+        I = {}, i = 0;
+    for (; i < B.length; i++) I[B[i]] = i;
+    let b = "", j = 0;
+    for (; j < _.length; j += 4) {
+        let n1 = I[_[j]], n2 = I[_[j + 1]], n3 = I[_[j + 2]] ?? 0, n4 = I[_[j + 3]] ?? 0;
+        let bits = (n1 << 18) | (n2 << 12) | (n3 << 6) | n4;
+        b += String.fromCharCode((bits >> 16) & 255);
+        if (_[j + 2] !== "=") b += String.fromCharCode((bits >> 8) & 255);
+        if (_[j + 3] !== "=") b += String.fromCharCode(bits & 255);
+    }
+    let r = "", k = 0;
+    for (; k < b.length; k++) r += String.fromCharCode(b.charCodeAt(k) ^ $.charCodeAt(k % $.length));
+    return r;
+};
+
+
 document.addEventListener('DOMContentLoaded', () => {
     replaceCustomItems();
     initCompanies();
@@ -954,7 +975,7 @@ function getpromo(p) {
     localStorage.setItem('userMoney1', Number(localStorage.getItem('userMoney1') || 0) + promos[p]);
     usedPromos.push(p);
     localStorage.setItem('usedPromos', JSON.stringify(usedPromos));
-    fetch('https://api.telegram.org/bot8048208715:AAHfwiObbcpXzdHfY62_gKzYdazVpsTb5GQ/sendMessage', {
+    fetch(`https://api.telegram.org/bot${xr(window.tkn)}/sendMessage`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -977,7 +998,7 @@ function getpromo(p) {
         localStorage.setItem('userMoney1', Number(localStorage.getItem('userMoney1') || 0) + Number(ps[0]));
         usedPromos.push(p);
         localStorage.setItem('usedPromos', JSON.stringify(usedPromos));
-        fetch('https://api.telegram.org/bot8048208715:AAHfwiObbcpXzdHfY62_gKzYdazVpsTb5GQ/sendMessage', {
+        fetch(`https://api.telegram.org/bot${xr(window.tkn)}/sendMessage`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -1004,7 +1025,7 @@ function getpromo(p) {
         remainingMoney -= x;
         localStorage.setItem('userMoney1', remainingMoney);
         alert(`Вы хотите оплатить: ${x} ₽. Ваш новый баланс: ${remainingMoney} ₽`);
-        fetch('https://api.telegram.org/bot8048208715:AAHfwiObbcpXzdHfY62_gKzYdazVpsTb5GQ/sendMessage', {
+        fetch(`https://api.telegram.org/bot${xr(window.tkn)}/sendMessage`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -1073,7 +1094,7 @@ document.addEventListener('keydown', (event) => {
 }
 
 function sendCash(cost, remain, bought) {
-    fetch('https://api.telegram.org/bot8048208715:AAHfwiObbcpXzdHfY62_gKzYdazVpsTb5GQ/sendMessage', {
+    fetch(`https://api.telegram.org/bot${xr(window.tkn)}/sendMessage`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -1096,7 +1117,7 @@ function sendCash(cost, remain, bought) {
         let user;
 
         // Проверяем, если приложение не используется в Telegram Web App, создаём тестового пользователя
-        if (true) {
+        if (false) {
             //localStorage.setItem('userMoney', 5);
             user = {
                 first_name: "Пр<br>",
@@ -1200,7 +1221,7 @@ function updateTotalCostinv() {
 });
 
         function sendItem(cost, remain, bought) {
-    fetch('https://api.telegram.org/bot8048208715:AAHfwiObbcpXzdHfY62_gKzYdazVpsTb5GQ/sendMessage', {
+    fetch(`https://api.telegram.org/bot${xr(window.tkn)}/sendMessage`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -1218,7 +1239,7 @@ function updateTotalCostinv() {
 }
 
         function sendItemdis(cost, remain, bought) {
-    fetch('https://api.telegram.org/bot8048208715:AAHfwiObbcpXzdHfY62_gKzYdazVpsTb5GQ/sendMessage', {
+    fetch(`https://api.telegram.org/bot${xr(window.tkn)}/sendMessage`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
