@@ -537,27 +537,27 @@ function calculateHappiness() {
     const employmentDeficit = Math.max(0, requiredJobs - totalJobs);
 
     window.effects = {
-        taxes: Math.max(-15, (taxRate < 12 ? (12 - taxRate) : -(taxRate - 12) * 1.7)),
-        housing: Math.min(15, effectiveHouses * 0.7) - 
-               (population > effectiveHouses * 600 ? 18 : 0),
-        healthcare: Math.min(30, hospitals * 2.2) - 
-                  hospitalDeficit * 3.5,
-        employment: Math.min(70, 
+        taxes: Math.max(-25, (taxRate < 12 ? (12 - taxRate) : -(taxRate - 12) * 1.7)),
+        housing: Math.max(-25, Math.min(15, effectiveHouses * 0.7) - 
+               (population > effectiveHouses * 600 ? 18 : 0)),
+        healthcare: Math.max(-25, Math.min(30, hospitals * 2.2) - 
+                  hospitalDeficit * 3.5),
+        employment: Math.max(-25, Math.min(70, 
             Math.max(-40, 
                 (totalJobs * 0.6) -
                 (employmentDeficit * 0.35)
             )
-        ),
-        infrastructure: Math.min(15, 
+        )),
+        infrastructure: Math.max(-25, Math.min(15, 
             ['Школа','Детский сад','Парк','Спортивный комплекс','Библиотека','Театр','Торговый квартал']
-                .reduce((sum, item) => sum + (getInventoryValue(item) * 0.55), 0)
+                .reduce((sum, item) => sum + (getInventoryValue(item) * 0.55), 0))
         ),
-        economy: Math.min(15, 
+        economy: Math.max(-25, Math.min(15, 
             ['Нефтяная вышка','Ферма','Торговый центр','Банк','IT-Кластер','Криптоферма','Логистический хаб']
-                .reduce((sum, item) => sum + (getInventoryValue(item) * 0.45), 0)
+                .reduce((sum, item) => sum + (getInventoryValue(item) * 0.45), 0))
         ),
-        energy: Math.min(15, powerStations * 3.5) - 
-              (unpoweredHouses > 0 ? 12 : 0)
+        energy: Math.max(-25, Math.min(15, powerStations * 3.5) - 
+              (unpoweredHouses > 0 ? 12 : 0))
     };
 
     // Нормализация значений
