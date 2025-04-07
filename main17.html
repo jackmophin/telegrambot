@@ -30,6 +30,8 @@ document.addEventListener('DOMContentLoaded', () => {
     initCompanies();
     updateCompanies();
     calculateHappiness();
+    calculateLoans();
+    updateLoanStatus();
     document.getElementById('companyBudget').min = COMPANY.MIN_BUDGET;
 });
         
@@ -43,6 +45,76 @@ document.addEventListener('DOMContentLoaded', () => {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Telegram Web App</title>
     <style>
+    
+          body {
+            font-family: Arial, sans-serif;
+            background-color: #1a1a1a;
+            color: #fff;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .category-title {
+            font-size: 24px;
+            margin: 30px 0 15px;
+            color: #4CAF50;
+        }
+
+        .guarant-container {
+            background: #2c3e50;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 25px;
+        }
+
+        .guarant-tier {
+            background: #34495e;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 10px 0;
+        }
+
+        .tier-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .guarant-button {
+            background: #3498db;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .guarant-button:disabled {
+            background: #7f8c8d;
+            cursor: not-allowed;
+        }
+
+        .discount-badge {
+            background: #27ae60;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+
+.debt-status {
+    color: #ff4444;
+    margin: 15px 0;
+}
+
+.title-card {
+    background: linear-gradient(45deg, #2c3e50, #3498db);
+    padding: 15px;
+    margin: 10px 0;
+    border-radius: 8px;
+    border: 1px solid #2980b9;
+}
     
    .happiness-container {
     width: 80%;
@@ -416,7 +488,310 @@ document.addEventListener('DOMContentLoaded', () => {
 <shop-item item-id="63" data-price="55000" name="Ионный двигатель"></shop-item>
 <shop-item item-id="64" data-price="85000" name="Квантовая сеть"></shop-item>
 <shop-item item-id="65" data-price="120000" name="Бионический имплант"></shop-item>
+
+<div class="category-title">Гаранты развития</div>
+<div id="guarantsSection" class="guarant-container"></div>
+<script>
+ const GuarantsSystem = (() => {
+            const guarantsData = {
+                'Экономика': {
+                    basePrice: 500000,
+                    currentTier: 0,
+                    multiplier: 1.95,
+                    discountPerTier: 0.04,
+                    items: [
+  "Нефтяная вышка",
+  "Завод",
+  "Аэропорт",
+  "Банк",
+  "Ферма",
+  "Горнодобывающая фабрика",
+  "Торговый центр",
+  "Энергетическая станция",
+  "Рынок",
+  "Мельница",
+  "Международная торговля",
+  "Нефтеперерабатывающий завод",
+  "IT-Кластер",
+  "Сеть АЗС",
+  "Криптоферма",
+  "Логистический хаб"
+]
+                },
+                'Технологии': {
+                    basePrice: 750000,
+                    currentTier: 0,
+                    multiplier: 1.55,
+                    discountPerTier: 0.04,
+                    items: [
+  "Ученый",
+  "Ученый-эксперт",
+  "Лаборатория",
+  "Нанороботы",
+  "Киберпротезы",
+  "Ионный двигатель",
+  "Квантовая сеть",
+  "Бионический имплант"
+]
+                }
+            };
+
+            // Инициализация из localStorage
+            const init = () => {
+                const saved = localStorage.getItem('guarantsData');
+                if(saved) Object.assign(guarantsData, JSON.parse(saved));
+            };
+
+            // Сохранение состояния
+            const saveState = () => {
+                localStorage.setItem('guarantsData', JSON.stringify(guarantsData));
+            };
+
+            // Расчет цены уровня
+            const getCurrentPrice = (category) => {
+                return guarantsData[category].basePrice * 
+                    Math.pow(guarantsData[category].multiplier, guarantsData[category].currentTier);
+            };
+
+            // Обновление интерфейса
+            const updateUI = (userBalance) => {
+                const container = document.getElementById('guarantsSection');
+                container.innerHTML = '';
+
+                Object.entries(guarantsData).forEach(([category, data]) => {
+                    const nextTier = data.currentTier + 1;
+                    const currentPrice = getCurrentPrice(category);
+                    const discount = (data.currentTier * data.discountPerTier * 100).toFixed(1);
+
+                    const guarantHTML = `
+                        <div class="guarant-tier">
+                            <div class="tier-header">
+                                <h3>${category} (Ур. ${data.currentTier})</h3>
+                                <span class="discount-badge">-${discount}%</span>
+                            </div>
+                            <p>Следующий уровень: ${nextTier}</p>
+                            <p>Стоимость: ${Math.round(currentPrice).toLocaleString()}₽</p>
+                            <button 
+                                class="guarant-button" 
+                                onclick="GuarantsSystem.upgradeTier('${category}')"
+                                ${userBalance >= currentPrice ? '' : 'disabled'}>
+                                Улучшить
+                            </button>
+                        </div>
+                    `;
+                    container.innerHTML += guarantHTML;
+                });
+            };
+
+            // Основная функция улучшения
+            const upgradeTier = (category) => {
+                const currentPrice = getCurrentPrice(category);
+                let userBalance = parseInt(localStorage.getItem('userMoney1') || 0);
+
+                if(userBalance >= currentPrice) {
+                    // Вычитаем средства
+                    userBalance -= currentPrice;
+                    localStorage.setItem('userMoney1', userBalance);
+
+                    // Улучшаем гарант
+                    guarantsData[category].currentTier++;
+                    saveState();
+
+                    // Применяем скидки
+                    applyDiscounts();
+                    
+                    // Обновляем интерфейс
+                    updateUI(userBalance);
+                    return true;
+                }
+                return false;
+            };
+
+            // Применение скидок к товарам
+            const applyDiscounts = () => {
+                document.querySelectorAll('.item-container').forEach(item => {
+                    const itemName = item.querySelector('.item-name').innerText;
+                    Object.entries(guarantsData).forEach(([category, data]) => {
+                        if(data.items.includes(itemName)) {
+                            const discount = data.currentTier * data.discountPerTier;
+                            const basePrice = parseInt(item.dataset.price);
+                            const newPrice = basePrice * (1 - discount);
+                            item.querySelector('.price span').innerText = Math.round(newPrice);
+                        }
+                    });
+                });
+            };
+
+            return {
+                init,
+                upgradeTier,
+                updateUI,
+                applyDiscounts
+            };
+        })();
+
+        // Инициализация при загрузке
+        document.addEventListener('DOMContentLoaded', () => {
+            GuarantsSystem.init();
+            const userBalance = parseInt(localStorage.getItem('userMoney1') || 0);
+            GuarantsSystem.updateUI(userBalance);
+            GuarantsSystem.applyDiscounts();
+        });
+</script>
+<div class="category-title">Кредитная система</div>
+<div class="credit-section" style="padding:20px; border:1px solid #444; border-radius:8px; margin-bottom:20px;">
+    <div id="activeCredits"></div>
+    <div class="i1">
+        <input type="number" id="loanAmount" placeholder="Сумма кредита (мин. 10,000₽)" style="width:90%">
+        <input type="number" id="loanTerm" placeholder="Срок (дни, макс. 2)" style="width:90%">
+        <button class="pay-button" onclick="takeLoan()">Взять кредит</button>
+    </div>
+    <p id="loanError" style="color:#ff4444; margin-top:10px;"></p>
+</div>
+
+<script>
+// Добавить в раздел скриптов
+const LOAN = {
+    BASE_RATE: 0.0012,
+    PENALTY_RATE: 0.5,
+    MIN_AMOUNT: 10000,
+    MIN_BANKS: 5,
+    COOLDOWN: 86400000 // 24 часа
+};
+
+function checkLoanConditions() {
+    const banks = parseInventoryToObject(localStorage.getItem('inventory'))['Банк'] || 0;
+    const balance = parseInt(localStorage.getItem('userMoney1') || 0);
+    
+    return {
+        hasBanks: banks >= LOAN.MIN_BANKS,
+        hasBalance: balance >= LOAN.MIN_AMOUNT,
+        isBlocked: localStorage.getItem('loanBlocked') && 
+                  Date.now() < parseInt(localStorage.getItem('loanBlocked'))
+    };
+}
+
+function takeLoan() {
+    const amount = parseInt(document.getElementById('loanAmount').value);
+    const termDays = parseInt(document.getElementById('loanTerm').value);
+    if(!amount || !termDays) { return; }
+    const conditions = checkLoanConditions();
+    
+    document.getElementById('loanError').textContent = '';
+    
+    
+    if(conditions.isBlocked) {
+        const unblockTime = new Date(parseInt(localStorage.getItem('loanBlocked')));
+        return alert(`Вы заблокированы до ${unblockTime.toLocaleString()}`);
+    }
+    
+    if(!conditions.hasBanks) {
+        return document.getElementById('loanError').textContent = 
+            `Требуется минимум ${LOAN.MIN_BANKS} банков!`;
+    }
+    
+    if(amount < LOAN.MIN_AMOUNT || termDays > 2 || termDays < 1) {
+        return document.getElementById('loanError').textContent = 
+            'Некорректные параметры кредита!';
+    }
+
+    const loans = JSON.parse(localStorage.getItem('loans') || '[]');
+    const dueDate = Date.now() + termDays * 86400000;
+    
+    loans.push({
+        amount: amount,
+        dueDate: dueDate,
+        rate: LOAN.BASE_RATE,
+        originalAmount: amount,
+        paid: false
+    });
+    
+    localStorage.setItem('loans', JSON.stringify(loans));
+    remainingMoney += amount;
+    localStorage.setItem('userMoney1', remainingMoney);
+    updateLoanStatus();
+    updateTotalCost();
+}
+
+function updateLoanStatus() {
+    const loans = JSON.parse(localStorage.getItem('loans') || '[]');
+    let statusHTML = '';
+    
+    loans.forEach((loan, index) => {
+        const daysLeft = Math.ceil((loan.dueDate - Date.now()) / 86400000);
+        let currentAmount = loan.amount * Math.pow(1 + loan.rate, daysLeft);
         
+        statusHTML += `
+            <div class="inventory-item" style="margin:10px; padding:15px; border-color:#ff4444">
+                <h3>Кредит #${index + 1}</h3>
+                <p>Сумма: ${Math.round(currentAmount).toLocaleString()}₽</p>
+                <p>Дней до погашения: ${Math.max(0, daysLeft)}</p>
+                <button class="pay-button" onclick="repayLoan(${index})" 
+                    style="${daysLeft < 0 ? 'background:#ff4444' : ''}">
+                    Погасить
+                </button>
+            </div>
+        `;
+    });
+    
+    document.getElementById('activeCredits').innerHTML = statusHTML;
+}
+
+function repayLoan(index) {
+    calculateLoans(); 
+    const loans = JSON.parse(localStorage.getItem('loans'));
+    const loan = loans[index];
+    const currentAmount = loan.amount * Math.pow(1 + loan.rate, 
+        Math.ceil((loan.dueDate - Date.now()) / 86400000));
+    
+    if(remainingMoney >= currentAmount) {
+        remainingMoney -= currentAmount;
+        localStorage.setItem('userMoney1', remainingMoney);
+        loans.splice(index, 1);
+        localStorage.setItem('loans', JSON.stringify(loans));
+        updateLoanStatus();
+    } else {
+        if(Date.now() > loan.dueDate) {
+            loan.rate += LOAN.PENALTY_RATE;
+            loan.dueDate = Date.now() + 86400000;
+            localStorage.setItem('loanBlocked', Date.now() + LOAN.COOLDOWN);
+            localStorage.setItem('loans', JSON.stringify(loans));
+            updateLoanStatus();
+            alert('Просрочка! Ставка увеличена на 50%, доступ к кредитам заблокирован на 24 часа!');
+        }
+        alert('Недостаточно средств для погашения!');
+    }
+}
+
+function calculateLoans() {
+    const loans = JSON.parse(localStorage.getItem('loans') || '[]');
+    const lastLoanUpdate = localStorage.getItem('lastLoanUpdate');
+    const now = Date.now();
+    
+    if(lastLoanUpdate) {
+        const minutesPassed = Math.floor((now - lastLoanUpdate) / 60000);
+        
+        loans.forEach(loan => {
+            if(!loan.paid) {
+                // Расчет сложных процентов
+                const periods = minutesPassed;
+                loan.amount *= Math.pow(1 + LOAN.BASE_RATE, periods);
+                
+                // Проверка просрочки
+                if(now > loan.dueDate) {
+                    loan.amount *= Math.pow(1 + LOAN.PENALTY_RATE, 
+                        Math.floor((now - loan.dueDate) / 86400000));
+                }
+            }
+        });
+    }
+    
+    localStorage.setItem('loans', JSON.stringify(loans));
+    localStorage.setItem('lastLoanUpdate', now);
+}
+
+
+ </script>       
         <!-- item-41 ЗАНЯТ ДРУГИМ ПРЕДМЕТОМ, НАЧИНАТЬ С item-42 -->
         
         <div class="i1">
@@ -855,7 +1230,6 @@ function deleteCompany(companyId) {
 <div id="inventory" class="inventory">
     <p id='inv'>Ваши покупки появятся здесь.</p>
 </div>
-    <button class='pay-button' onclick='deleteStrg()'>Удалить все сохранения</button>
 <p>Баллы вашей армии: <span id='armyb'>0</span></p>
 <p>Налоги на прибыль: <span id="taxrate">0</span></p>
 <input type='text' id="promo" style="width: 90%;" placeholder="Ввод промокода"><button onclick="getpromo(document.getElementById('promo').value)" style="border: 1px solid white; background-color: black; color: white; border-radius: 5px; padding: 15px; margin: 15px;">Получить</button>
@@ -871,6 +1245,7 @@ function deleteCompany(companyId) {
         </div>
 </div>
 </div>
+    <button class='pay-button' style='background-color: red;' onclick='deleteStrg()'>Удалить все сохранения</button>
 <script>
     
     function copytext(e) {
@@ -1050,6 +1425,10 @@ function getpromo(p) {
             localStorage.removeItem('userMoney1')
             localStorage.removeItem('usedPromos')
             localStorage.removeItem('userCompanies')
+            localStorage.removeItem('guarantsData')
+            localStorage.removeItem('loans');
+            localStorage.removeItem('loanBlocked');
+            window.location.reload()
     }
     
     document.querySelectorAll('.item-container input').forEach(input => {
@@ -1157,36 +1536,44 @@ function sendCash(cost, remain, bought) {
             remainingMoney = parseInt(localStorage.getItem('userMoney1'));
         }
 
-        // Функции увеличения и уменьшения количества товара
-        function updateTotalCost() {
+       function updateTotalCost() {
     totalCost = 0;
-    let boughtItems = ''; // Строка для хранения купленных товаров
+    let boughtItems = '';
+    const guarantsData = JSON.parse(localStorage.getItem('guarantsData') || '{}');
 
     const itemContainers = document.querySelectorAll('.item-container');
-itemContainers.forEach(item => {
-    const input = item.querySelector('input');
-    if (!input) return; // Если input не найден, пропускаем итерацию
+    itemContainers.forEach(item => {
+        const input = item.querySelector('input');
+        if (!input) return;
 
-    const quantity = parseInt(input.value) || 0; // Если пусто, считаем как 0
-    const price = parseInt(item.getAttribute('data-price')) || 0;
-    const itemName = item.querySelector('.item-name')?.innerText || 'Unknown';
+        const quantity = parseInt(input.value) || 0;
+        const basePrice = parseInt(item.dataset.price) || 0;
+        const itemName = item.querySelector('.item-name')?.innerText.trim();
 
-    if (quantity > 0) {
-        boughtItems += `${itemName} × ${quantity}\n`;
-    }
+        if (quantity > 0) {
+            boughtItems += `${itemName} × ${quantity}\n`;
+        }
 
-    totalCost += quantity * price * (taxr + 1);
-});
+        // Применяем скидки от всех подходящих гарантов
+        let finalPrice = basePrice;
+        Object.values(guarantsData).forEach(guarant => {
+            if (guarant.items.includes(itemName)) {
+                finalPrice *= (1 - guarant.currentTier * guarant.discountPerTier);
+            }
+        });
 
+        totalCost += finalPrice * quantity * (taxr + 1);
+    });
 
     if (boughtItems !== '') {
-        let items = boughtItems.split('\n').length - 1
-        let tovar = (items === 1) ? ' товар' : (items >= 2 && items <= 4) ? ' товара' : ' товаров';
-        boughtItems += '-------\nВсего: ' + items + tovar; // Добавляем количество товаров
+        const itemsCount = boughtItems.split('\n').length - 1;
+        const tovar = itemsCount === 1 ? 'товар' : 
+                     itemsCount >= 2 && itemsCount <= 4 ? 'товара' : 'товаров';
+        boughtItems += `-------\nВсего: ${itemsCount} ${tovar}`;
     }
 
-    document.getElementById('total-cost').innerText = totalCost;
-    document.getElementById('remaining-money').innerText = remainingMoney - totalCost;
+    document.getElementById('total-cost').textContent = Math.round(totalCost);
+    document.getElementById('remaining-money').textContent = Math.round(remainingMoney - totalCost);
 
     return boughtItems;
 }
