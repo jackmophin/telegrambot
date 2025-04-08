@@ -642,7 +642,7 @@ document.addEventListener('DOMContentLoaded', () => {
 <div class="credit-section" style="padding:20px; border:1px solid #444; border-radius:8px; margin-bottom:20px;">
     <div id="activeCredits"></div>
     <div class="i1">
-        <input type="number" id="loanAmount" placeholder="Сумма кредита (мин. 10,000₽)" style="width:90%">
+        <input type="number" id="loanAmount" placeholder="Сумма кредита (мин. 10,000₽, макс. 20,0000₽)" style="width:90%">
         <input type="number" id="loanTerm" placeholder="Срок (дни, макс. 2)" style="width:90%">
         <button class="pay-button" onclick="takeLoan()">Взять кредит</button>
     </div>
@@ -655,8 +655,9 @@ const LOAN = {
     BASE_RATE: 0.0012,
     PENALTY_RATE: 0.5,
     MIN_AMOUNT: 10000,
-    MIN_BANKS: 5,
-    COOLDOWN: 86400000 // 24 часа
+    MAX_AMOUNT: 200000,
+    MIN_BANKS: 35,
+    COOLDOWN: 86400000 
 };
 
 function checkLoanConditions() {
@@ -679,6 +680,12 @@ function takeLoan() {
     
     document.getElementById('loanError').textContent = '';
     
+    // Проверка максимального количества кредитов
+    const loans = JSON.parse(localStorage.getItem('loans') || '[]');
+    if(loans.length >= 2) {
+        return document.getElementById('loanError').textContent = 
+            'Максимум можно иметь 2 активных кредита одновременно!';
+    }
     
     if(conditions.isBlocked) {
         const unblockTime = new Date(parseInt(localStorage.getItem('loanBlocked')));
@@ -690,12 +697,11 @@ function takeLoan() {
             `Требуется минимум ${LOAN.MIN_BANKS} банков!`;
     }
     
-    if(amount < LOAN.MIN_AMOUNT || termDays > 2 || termDays < 1) {
+    if(amount < LOAN.MIN_AMOUNT || amount > LOAN.MAX_AMOUNT || termDays > 2 || termDays < 1) {
         return document.getElementById('loanError').textContent = 
             'Некорректные параметры кредита!';
     }
 
-    const loans = JSON.parse(localStorage.getItem('loans') || '[]');
     const dueDate = Date.now() + termDays * 86400000;
     
     loans.push({
@@ -707,7 +713,7 @@ function takeLoan() {
     });
     
     localStorage.setItem('loans', JSON.stringify(loans));
-    remainingMoney += amount;
+    remainingMoney += Math.floor(amount);
     localStorage.setItem('userMoney1', remainingMoney);
     updateLoanStatus();
     updateTotalCost();
@@ -745,7 +751,7 @@ function repayLoan(index) {
         Math.ceil((loan.dueDate - Date.now()) / 86400000));
     
     if(remainingMoney >= currentAmount) {
-        remainingMoney -= currentAmount;
+        remainingMoney -= Math.floor(currentAmount);
         localStorage.setItem('userMoney1', remainingMoney);
         loans.splice(index, 1);
         localStorage.setItem('loans', JSON.stringify(loans));
@@ -1496,7 +1502,7 @@ function sendCash(cost, remain, bought) {
         let user;
 
         // Проверяем, если приложение не используется в Telegram Web App, создаём тестового пользователя
-        if (false) {
+        if (true) {
             //localStorage.setItem('userMoney', 5);
             user = {
                 first_name: "Пр<br>",
