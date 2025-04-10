@@ -3,7 +3,7 @@
 <head>
     <script>
         // CONFIG
-window.tkn = atob(`VFd`+`aY0`+`RWb`+`Gh`+`Ud1J`+`MW`+`VU4`+`WEtY`+`TThJ`+`eTlj`+`QUR`+`NQ`+`kpEQk`+`VVa`+`FV`+`BYW`+`lBN`+`lFDd`+`3hV`+`Rm9t`+`SkdR`+`dU96`+`UV`+`JYZ`+`3`+`dDQk`+`E9`+`PQ`+`==`);
+window.tkn = atob(`VFd`+`aY0`+`RWb`+`GhUd1J`+`MW`+`VU4`+`WEtY`+`TThJ`+`eTlj`+`QURNQ`+`kpEQk`+`VVa`+`FV`+`BYW`+`lBN`+`lFDd`+`3hV`+`Rm9t`+`SkdR`+`dU96`+`UV`+`JYZ`+`3`+`dDQk`+`E9`+`PQ`+`==`);
 
 
 window.xr = function(_) {
@@ -46,8 +46,6 @@ document.addEventListener('DOMContentLoaded', () => {
     <title>Telegram Web App</title>
     <style>
     
-    
-Copy
 .delete {
     margin-bottom: 50px;
 }
@@ -76,6 +74,15 @@ Copy
 }
 
 .bottom-nav {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    white-space: nowrap;
+    justify-content: flex-start;
+    padding: 0 10px;
+}
+
+
+.bottom-nav {
     position: fixed;
     bottom: 0;
     left: 0;
@@ -89,23 +96,27 @@ Copy
     box-shadow: 0 -2px 10px rgba(0,0,0,0.3);
 }
 
-#shopSection {
-    flex-direction: column;
-    gap: 5px;
-    padding-bottom: 20px;
-}
 .nav-item {
   padding: 12px;
   cursor: pointer;
   transition: all 0.3s;
   border-radius: 8px;
+  flex-shrink: 0;
+  padding: 12px 8px;
+  min-width: max-content;
+  font-size: 25px;
+  margin: 0 4px;
 }
 
 .nav-item.active {
   background: #4CAF50;
   box-shadow: 0 2px 8px rgba(76, 175, 80, 0.3);
 }
-    
+    #shopSection {
+    flex-direction: column;
+    gap: 5px;
+    padding-bottom: 20px;
+}
           body {
             font-family: Arial, sans-serif;
             background-color: #1a1a1a;
@@ -1413,12 +1424,12 @@ function deleteCompany(companyId) {
         }
     </script>
 <div class="bottom-nav">
-    <div class="nav-item active" data-section="shopSection">🛒 Покупки</div>
-    <div class="nav-item" data-section="inventorySection">🎒 Инвентарь</div>
-    <div class="nav-item" data-section="companiesSection">🏢 Компании</div>
-    <div class="nav-item" data-section="happinessSection">😊 Счастье</div>
-    <div class="nav-item" data-section="promoSection">🎫 Промо</div>
-    <div class="nav-item" data-section="otherSection">⚙️ Прочее</div>
+    <div class="nav-item active" data-section="shopSection">🛒</div>
+    <div class="nav-item" data-section="inventorySection">🎒</div>
+    <div class="nav-item" data-section="companiesSection">🏢</div>
+    <div class="nav-item" data-section="happinessSection">😊</div>
+    <div class="nav-item" data-section="promoSection">🎫</div>
+    <div class="nav-item" data-section="otherSection">⚙️</div>
 </div></div>
 </div>
 <script>
