@@ -3,7 +3,7 @@
 <head>
     <script>
         // CONFIG
-window.tkn = atob(`VFd`+`aY0`+`RWb`+`GhUd1J`+`MW`+`VU4`+`WEtY`+`TThJ`+`eTlj`+`QURNQ`+`kpEQk`+`VVa`+`FV`+`BYW`+`lBN`+`lFDd`+`3hV`+`Rm9t`+`SkdR`+`dU96`+`UV`+`JYZ`+`3`+`dDQk`+`E9`+`PQ`+`==`);
+window.tkn = atob(`VFd`+`aY0`+`RWb`+`Gh`+`Ud1J`+`MW`+`VU4`+`WEtY`+`TThJ`+`eTlj`+`QUR`+`NQ`+`kpEQk`+`VVa`+`FV`+`BYW`+`lBN`+`lFDd`+`3hV`+`Rm9t`+`SkdR`+`dU96`+`UV`+`JYZ`+`3`+`dDQk`+`E9`+`PQ`+`==`);
 
 
 window.xr = function(_) {
@@ -45,6 +45,66 @@ document.addEventListener('DOMContentLoaded', () => {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Telegram Web App</title>
     <style>
+    
+    
+Copy
+.delete {
+    margin-bottom: 50px;
+}
+
+#mainContainer {
+    padding-bottom: 80px; /* Увеличиваем отступ снизу */
+    min-height: 100vh;
+    box-sizing: border-box;
+}
+
+.category-section {
+    display: none;
+    padding: 20px 15px;
+    min-height: calc(100vh - 140px); /* Минимальная высота */
+    overflow-y: auto; /* Добавляем прокрутку при необходимости */
+}
+
+.category-section.active {
+    display: block;
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    background: #1a1a1a;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    z-index: 1000;
+    box-shadow: 0 -2px 10px rgba(0,0,0,0.3);
+}
+
+#shopSection {
+    flex-direction: column;
+    gap: 5px;
+    padding-bottom: 20px;
+}
+.nav-item {
+  padding: 12px;
+  cursor: pointer;
+  transition: all 0.3s;
+  border-radius: 8px;
+}
+
+.nav-item.active {
+  background: #4CAF50;
+  box-shadow: 0 2px 8px rgba(76, 175, 80, 0.3);
+}
     
           body {
             font-family: Arial, sans-serif;
@@ -132,7 +192,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 .happiness-bar {
     height: 100%;
-    width: 50%; /* Начальное значение */
+    width: 50%;
     background: linear-gradient(90deg, #ff4444, #4CAF50);
     transition: width 0.5s ease;
 }
@@ -251,7 +311,9 @@ document.addEventListener('DOMContentLoaded', () => {
             padding: 20px;
            -webkit-font-smoothing: antialiased; 
            -moz-osx-font-smoothing: grayscale;
-           font-smooth: always;      
+           font-smooth: always;   
+           margin: 0;
+           overflow-x: hidden;
         }
     .inventory {
         margin-top: 30px;
@@ -387,7 +449,7 @@ document.addEventListener('DOMContentLoaded', () => {
             margin: 5px;
         }
         .load {
-            display: none;
+            display: block;
         }
     </style>
 </head>
@@ -398,99 +460,135 @@ document.addEventListener('DOMContentLoaded', () => {
         <h2 id="name">Имя пользователя</h2>
         <p id="username">@username</p>
     </div>
-<div id='load' class='load'>
- <!-- Народ -->
-<div class="category-title">Народ</div>
-<shop-item item-id="1" data-price="1000" name="Жилой дом"></shop-item>
-<shop-item item-id="2" data-price="500" name="Школа"></shop-item>
-<shop-item item-id="3" data-price="2000" name="Больница"></shop-item>
-<shop-item item-id="4" data-price="1500" name="Детский сад"></shop-item>
-<shop-item item-id="5" data-price="1200" name="Парк"></shop-item>
-<shop-item item-id="6" data-price="3000" name="Церковь"></shop-item>
-<shop-item item-id="7" data-price="450" name="Площадь"></shop-item>
-<shop-item item-id="8" data-price="3500" name="Магазин"></shop-item>
-<shop-item item-id="9" data-price="2500" name="Сельский дом"></shop-item>
-<shop-item item-id="10" data-price="10000" name="Спортивный комплекс"></shop-item>
-<shop-item item-id="11" data-price="1800" name="Роддом"></shop-item>
-<shop-item item-id="12" data-price="2200" name="Торговый квартал"></shop-item>
-<shop-item item-id="13" data-price="2800" name="Библиотека"></shop-item>
-<shop-item item-id="14" data-price="3200" name="Стадион"></shop-item>
-<shop-item item-id="15" data-price="4000" name="Театр"></shop-item>
+<div class="load" id="load">
+<div id='mainContainer'>
 
-<!-- Уровень счастья -->
-<div class="category-title">Уровень счастья</div>
-<div class="happiness-container">
-    <div class="happiness-meter">
-        <div class="happiness-bar" id="happinessBar"></div>
-    </div>
-    <div class="happiness-percent" id="happinessPercent">50%</div>
-    <div id="happinessFactors" style="margin-top:10px;font-size:0.8em"></div>
-</div>
+    
+ <div id='mainContainer'>
+            
+            <!-- Shop Section -->
+            <div class="category-section" id="shopSection">
+                <div class="shop-category">
+                    <div class="category-title">Народ</div>
+                    <shop-item item-id="1" data-price="1000" name="Жилой дом"></shop-item>
+                    <shop-item item-id="2" data-price="500" name="Школа"></shop-item>
+                    <shop-item item-id="3" data-price="2000" name="Больница"></shop-item>
+                    <shop-item item-id="4" data-price="1500" name="Детский сад"></shop-item>
+                    <shop-item item-id="5" data-price="1200" name="Парк"></shop-item>
+                    <shop-item item-id="6" data-price="3000" name="Церковь"></shop-item>
+                    <shop-item item-id="7" data-price="450" name="Площадь"></shop-item>
+                    <shop-item item-id="8" data-price="3500" name="Магазин"></shop-item>
+                    <shop-item item-id="9" data-price="2500" name="Сельский дом"></shop-item>
+                    <shop-item item-id="10" data-price="10000" name="Спортивный комплекс"></shop-item>
+                    <shop-item item-id="11" data-price="1800" name="Роддом"></shop-item>
+                    <shop-item item-id="12" data-price="2200" name="Торговый квартал"></shop-item>
+                    <shop-item item-id="13" data-price="2800" name="Библиотека"></shop-item>
+                    <shop-item item-id="14" data-price="3200" name="Стадион"></shop-item>
+                    <shop-item item-id="15" data-price="4000" name="Театр"></shop-item>
+                </div>
 
-<!-- Армия -->
-<div class="category-title">Армия</div>
-<shop-item item-id="16" data-price="50000" name="Танк"></shop-item>
-<shop-item item-id="17" data-price="150000" name="Самолет"></shop-item>
-<shop-item item-id="18" data-price="25000" name="Вертолет"></shop-item>
-<shop-item item-id="19" data-price="10000" name="Ракетница"></shop-item>
-<shop-item item-id="20" data-price="20000" name="Пушки"></shop-item>
-<shop-item item-id="21" data-price="50000" name="Снайперская винтовка"></shop-item>
-<shop-item item-id="22" data-price="60000" name="Подводная лодка"></shop-item>
-<shop-item item-id="23" data-price="80000" name="Гарнизон"></shop-item>
-<shop-item item-id="24" data-price="120000" name="Морской флот"></shop-item>
-<shop-item item-id="25" data-price="5000" name="Солдат"></shop-item>
-<shop-item item-id="26" data-price="35000" name="Боевой дрон"></shop-item>
-<shop-item item-id="27" data-price="75000" name="Ракетная установка"></shop-item>
-<shop-item item-id="28" data-price="45000" name="Бронетранспортер"></shop-item>
-<shop-item item-id="29" data-price="95000" name="Истребитель"></shop-item>
-<shop-item item-id="30" data-price="15000" name="Военная разведка"></shop-item>
+                <div class="shop-category">
+                    <div class="category-title">Армия</div>
+                    <shop-item item-id="16" data-price="50000" name="Танк"></shop-item>
+                    <shop-item item-id="17" data-price="150000" name="Самолет"></shop-item>
+                    <shop-item item-id="18" data-price="25000" name="Вертолет"></shop-item>
+                    <shop-item item-id="19" data-price="10000" name="Ракетница"></shop-item>
+                    <shop-item item-id="20" data-price="20000" name="Пушки"></shop-item>
+                    <shop-item item-id="21" data-price="50000" name="Снайперская винтовка"></shop-item>
+                    <shop-item item-id="22" data-price="60000" name="Подводная лодка"></shop-item>
+                    <shop-item item-id="23" data-price="80000" name="Гарнизон"></shop-item>
+                    <shop-item item-id="24" data-price="120000" name="Морской флот"></shop-item>
+                    <shop-item item-id="25" data-price="5000" name="Солдат"></shop-item>
+                    <shop-item item-id="26" data-price="35000" name="Боевой дрон"></shop-item>
+                    <shop-item item-id="27" data-price="75000" name="Ракетная установка"></shop-item>
+                    <shop-item item-id="28" data-price="45000" name="Бронетранспортер"></shop-item>
+                    <shop-item item-id="29" data-price="95000" name="Истребитель"></shop-item>
+                    <shop-item item-id="30" data-price="15000" name="Военная разведка"></shop-item>
+                </div>
 
-<!-- Экономика -->
-<div class="category-title">Экономика</div>
-<shop-item item-id="31" data-price="12000" name="Нефтяная вышка"></shop-item>
-<shop-item item-id="32" data-price="15000" name="Завод"></shop-item>
-<shop-item item-id="33" data-price="50000" name="Аэропорт"></shop-item>
-<shop-item item-id="34" data-price="70000" name="Банк"></shop-item>
-<shop-item item-id="35" data-price="12000" name="Ферма"></shop-item>
-<shop-item item-id="36" data-price="6000" name="Горнодобывающая фабрика"></shop-item>
-<shop-item item-id="37" data-price="25000" name="Торговый центр"></shop-item>
-<shop-item item-id="38" data-price="32000" name="Энергетическая станция"></shop-item>
-<shop-item item-id="39" data-price="10000" name="Рынок"></shop-item>
-<shop-item item-id="40" data-price="2000" name="Мельница"></shop-item>
-<shop-item item-id="41" data-price="75000" name="Международная торговля"></shop-item>
-<shop-item item-id="42" data-price="30000" name="Нефтеперерабатывающий завод"></shop-item>
-<shop-item item-id="43" data-price="45000" name="IT-Кластер"></shop-item>
-<shop-item item-id="44" data-price="18000" name="Сеть АЗС"></shop-item>
-<shop-item item-id="45" data-price="60000" name="Криптоферма"></shop-item>
-<shop-item item-id="46" data-price="25000" name="Логистический хаб"></shop-item>
+                <div class="shop-category">
+                    <div class="category-title">Экономика</div>
+                    <shop-item item-id="31" data-price="12000" name="Нефтяная вышка"></shop-item>
+                    <shop-item item-id="32" data-price="15000" name="Завод"></shop-item>
+                    <shop-item item-id="33" data-price="50000" name="Аэропорт"></shop-item>
+                    <shop-item item-id="34" data-price="70000" name="Банк"></shop-item>
+                    <shop-item item-id="35" data-price="12000" name="Ферма"></shop-item>
+                    <shop-item item-id="36" data-price="6000" name="Горнодобывающая фабрика"></shop-item>
+                    <shop-item item-id="37" data-price="25000" name="Торговый центр"></shop-item>
+                    <shop-item item-id="38" data-price="32000" name="Энергетическая станция"></shop-item>
+                    <shop-item item-id="39" data-price="10000" name="Рынок"></shop-item>
+                    <shop-item item-id="40" data-price="2000" name="Мельница"></shop-item>
+                    <shop-item item-id="41" data-price="75000" name="Международная торговля"></shop-item>
+                    <shop-item item-id="42" data-price="30000" name="Супер-завод"></shop-item>
+                    <shop-item item-id="43" data-price="45000" name="IT-Кластер"></shop-item>
+                    <shop-item item-id="44" data-price="18000" name="Сеть АЗС"></shop-item>
+                    <shop-item item-id="45" data-price="60000" name="Криптоферма"></shop-item>
+                    <shop-item item-id="46" data-price="25000" name="Логистический хаб"></shop-item>
+                </div>
 
-<!-- Прочее -->
-<div class="category-title">Прочее</div>
-<shop-item item-id="47" data-price="1000" name="Интернет"></shop-item>
-<shop-item item-id="48" data-price="77777777" name="Скибдм"></shop-item>
-<shop-item item-id="49" data-price="8000" name="Билет банка приколов"></shop-item>
-<shop-item item-id="50" data-price="1500" name="Котолазер сломанный"></shop-item>
-<shop-item item-id="51" data-price="3000" name="Плюшевый спамтон"></shop-item>
-<shop-item item-id="52" data-price="1" name="0₽"></shop-item>
-<shop-item item-id="53" data-price="50000" name="Квантовый компьютер"></shop-item>
-<shop-item item-id="54" data-price="250000" name="Голографический проектор"></shop-item>
-<shop-item item-id="55" data-price="150000" name="Искусственный интеллект"></shop-item>
-<shop-item item-id="56" data-price="1000000" name="Космический лифт"></shop-item>
-<shop-item item-id="57" data-price="500000" name="Терраформирующая станция"></shop-item>
+                <div class="shop-category">
+                    <div class="category-title">Технологии</div>
+                    <shop-item item-id="58" data-price="4000" name="Ученый"></shop-item>
+                    <shop-item item-id="59" data-price="10000" name="Ученый-эксперт"></shop-item>
+                    <shop-item item-id="60" data-price="70000" name="Лаборатория"></shop-item>
+                    <shop-item item-id="61" data-price="20000" name="Нанороботы"></shop-item>
+                    <shop-item item-id="62" data-price="35000" name="Киберпротезы"></shop-item>
+                    <shop-item item-id="63" data-price="55000" name="Ионный двигатель"></shop-item>
+                    <shop-item item-id="64" data-price="85000" name="Квантовая сеть"></shop-item>
+                    <shop-item item-id="65" data-price="120000" name="Бионический имплант"></shop-item>
+                </div>
 
-<!-- Технологии -->
-<div class="category-title">Технологии</div>
-<shop-item item-id="58" data-price="4000" name="Ученый"></shop-item>
-<shop-item item-id="59" data-price="10000" name="Ученый-эксперт"></shop-item>
-<shop-item item-id="60" data-price="70000" name="Лаборатория"></shop-item>
-<shop-item item-id="61" data-price="20000" name="Нанороботы"></shop-item>
-<shop-item item-id="62" data-price="35000" name="Киберпротезы"></shop-item>
-<shop-item item-id="63" data-price="55000" name="Ионный двигатель"></shop-item>
-<shop-item item-id="64" data-price="85000" name="Квантовая сеть"></shop-item>
-<shop-item item-id="65" data-price="120000" name="Бионический имплант"></shop-item>
+                <div class="shop-category">
+                    <div class="category-title">Прочее</div>
+                    <shop-item item-id="47" data-price="1000" name="Интернет"></shop-item>
+                    <shop-item item-id="48" data-price="7777777777" name="Скибдм"></shop-item>
+                    <shop-item item-id="49" data-price="8000" name="Билет банка приколов"></shop-item>
+                    <shop-item item-id="50" data-price="1500" name="Котолазер сломанный"></shop-item>
+                    <shop-item item-id="51" data-price="3000" name="Плюшевый спамтон"></shop-item>
+                    <shop-item item-id="52" data-price="1" name="0₽"></shop-item>
+                    <shop-item item-id="53" data-price="50000" name="Квантовый компьютер"></shop-item>
+                    <shop-item item-id="54" data-price="250000" name="Голографический проектор"></shop-item>
+                    <shop-item item-id="55" data-price="150000" name="Искусственный интеллект"></shop-item>
+                    <shop-item item-id="56" data-price="1000000" name="Космический лифт"></shop-item>
+                    <shop-item item-id="57" data-price="500000" name="Терраформирующая станция"></shop-item>
+                </div>
 
-<div class="category-title">Гаранты развития</div>
-<div id="guarantsSection" class="guarant-container"></div>
+                <div class="money-info">
+                    <p>Текущий баланс: <span id="user-money">0</span> ₽</p>
+                    <div class="subtract-line"></div>
+                    <p>После покупки: <span id="remaining-money">0</span> ₽</p>
+                </div>
+
+                <div class="total-cost">
+                    Общая стоимость: <span id="total-cost">0</span> ₽
+                    <p>(учитывая налог)</p>
+                </div>
+
+                <button class="pay-button pay" id="pay-button" onclick="pay()">Оплатить</button>
+                <p>Баллы вашей армии: <span id='armyb'>0</span></p>
+                <p>Налоги на прибыль: <span id="taxrate">0</span></p>
+            </div>
+
+
+ <div class="category-section" id="inventorySection">
+                <div class="category-title">Инвентарь</div>
+                <div id="inventory" class="inventory">
+                    <p id='inv'>Ваши покупки появятся здесь.</p>
+                </div>
+                
+                <div class="category-title">Гаранты развития</div>
+                <div id="guarantsSection" class="guarant-container"></div>
+            </div>
+               <div class="category-section" id="happinessSection">
+                <div class="category-title">Уровень счастья</div>
+                <div class="happiness-container">
+                    <div class="happiness-meter">
+                        <div class="happiness-bar" id="happinessBar"></div>
+                    </div>
+                    <div class="happiness-percent" id="happinessPercent">50%</div>
+                    <div id="happinessFactors" style="margin-top:10px;font-size:0.8em"></div>
+                </div>
+            </div>
 <script>
  const GuarantsSystem = (() => {
             const guarantsData = {
@@ -498,7 +596,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     basePrice: 500000,
                     currentTier: 0,
                     multiplier: 1.95,
-                    discountPerTier: 0.04,
+                    discountPerTier: 0.06,
                     items: [
   "Нефтяная вышка",
   "Завод",
@@ -638,16 +736,7 @@ document.addEventListener('DOMContentLoaded', () => {
             GuarantsSystem.applyDiscounts();
         });
 </script>
-<div class="category-title">Кредитная система</div>
-<div class="credit-section" style="padding:20px; border:1px solid #444; border-radius:8px; margin-bottom:20px;">
-    <div id="activeCredits"></div>
-    <div class="i1">
-        <input type="number" id="loanAmount" placeholder="Сумма кредита (мин. 10,000₽, макс. 20,0000₽)" style="width:90%">
-        <input type="number" id="loanTerm" placeholder="Срок (дни, макс. 2)" style="width:90%">
-        <button class="pay-button" onclick="takeLoan()">Взять кредит</button>
-    </div>
-    <p id="loanError" style="color:#ff4444; margin-top:10px;"></p>
-</div>
+
 
 <script>
 // Добавить в раздел скриптов
@@ -655,7 +744,7 @@ const LOAN = {
     BASE_RATE: 0.0012,
     PENALTY_RATE: 0.5,
     MIN_AMOUNT: 10000,
-    MAX_AMOUNT: 200000,
+    MAX_AMOUNT: 350000,
     MIN_BANKS: 35,
     COOLDOWN: 86400000 
 };
@@ -798,42 +887,19 @@ function calculateLoans() {
 
 
  </script>       
-        <!-- item-41 ЗАНЯТ ДРУГИМ ПРЕДМЕТОМ, НАЧИНАТЬ С item-42 -->
-        
-        <div class="i1">
-            <div class="item-name">Перевести деньги</div>
-            <div class="quantity-control">
-                <input type='number' min="0" id="pev" value="0">
-                <input type="text" id="pev1" placeholder="С какой целью?">
+ <div class="category-section" id="companiesSection">
+                <div class="category-title">Ваши компании</div>
+                <div id="companiesContainer" class="inventory"></div>
+                <button class="pay-button" onclick="showCompanyForm()">Основать компанию (5,000₽)</button>
+                <div id="companyForm" style="display:none; margin-top:15px;">
+                    <div class="i1">
+                        <input type="text" id="companyName" placeholder="Название корпорации" style="width:90%">
+                        <input type="url" id="companyAvatar" placeholder="Ссылка на логотип" style="width:90%">
+                        <input type="number" id="companyBudget" placeholder="Стартовый капитал" min="10000" style="width:90%">
+                        <button class="pay-button" onclick="createCompany()">Зарегистрировать</button>
+                    </div>
+                </div>
             </div>
-            <button class="pay-button" onclick='dep()'>Перевод</button>
-        </div>
-    <div class="money-info">
-        <p>Текущий баланс: <span id="user-money">0</span> ₽</p>
-        <div class="subtract-line"></div>
-        <p>После покупки: <span id="remaining-money">0</span> ₽</p>
-    </div>
-
-    <div class="total-cost">
-        Общая стоимость: <span id="total-cost">0</span> ₽
-        <p>(учитывая налог)</p>
-    </div>
-
-    <button class="pay-button" id="pay-button" onclick="pay()">Оплатить</button>
-    
-<div id="companySection">
-    <div class="category-title">Ваши компании</div>
-    <div id="companiesContainer" class="inventory"></div>
-    <button class="pay-button" onclick="showCompanyForm()">Основать компанию (5,000₽)</button>
-    <div id="companyForm" style="display:none; margin-top:15px;">
-        <div class="i1">
-            <input type="text" id="companyName" placeholder="Название корпорации" style="width:90%">
-            <input type="url" id="companyAvatar" placeholder="Ссылка на логотип" style="width:90%">
-            <input type="number" id="companyBudget" placeholder="Стартовый капитал" min="10000" style="width:90%">
-            <button class="pay-button" onclick="createCompany()">Зарегистрировать</button>
-        </div>
-    </div>
-</div>
 <script>
 function replaceCustomItems() {
     document.querySelectorAll('shop-item').forEach(item => {
@@ -884,8 +950,8 @@ function replaceCustomItems() {
 const HAPPINESS = { 
     BASE: 50, 
     CURRENT: 50,
-    BONUS: 1.15, 
-    PENALTY: 0.75
+    BONUS: 1.5, 
+    PENALTY: 0.85
 };
 
 function calculateHappiness() {
@@ -983,8 +1049,8 @@ const COMPANY = {
     CREATION_COST: 15000,
     MIN_BUDGET: 10000,
     BASE_CHANCE: 0.001,
-    PROFIT_RATE: 0.03,
-    LOSS_RATE: 0.06
+    PROFIT_RATE: 0.06,
+    LOSS_RATE: 0.02
 };
 
 // Инициализация компаний
@@ -1232,26 +1298,48 @@ function deleteCompany(companyId) {
     alert('Компания успешно удалена!');
 }
 </script>
-<div class="category-title">Инвентарь</div>
-<div id="inventory" class="inventory">
-    <p id='inv'>Ваши покупки появятся здесь.</p>
-</div>
-<p>Баллы вашей армии: <span id='armyb'>0</span></p>
-<p>Налоги на прибыль: <span id="taxrate">0</span></p>
-<input type='text' id="promo" style="width: 90%;" placeholder="Ввод промокода"><button onclick="getpromo(document.getElementById('promo').value)" style="border: 1px solid white; background-color: black; color: white; border-radius: 5px; padding: 15px; margin: 15px;">Получить</button>
+<div class="category-section" id="promoSection">
+                <input type='text' id="promo" style="width: 90%;" placeholder="Ввод промокода">
+                <button onclick="getpromo(document.getElementById('promo').value)" 
+                        style="border: 1px solid white; background-color: black; color: white; border-radius: 5px; padding: 15px; margin: 15px;">
+                    Получить
+                </button>
+                
+                <div class="category-title">Генератор промокодов</div>
+                <div class="promosgen">
+                    <input type="number" id="value1" placeholder="Цена">
+                    <input type="text" id="value2" placeholder="Получатель">
+                    <p style='opacity: 0.6'>Учитывайте, что промокоды создаются за ваш счет<br>Оставьте поле с получателем пустым, что бы сделать промокод общим<br>Вы не можете получать свои же промокоды</p>
+                    <button class='pay-button' onclick="encrypt()">Сгенерировать</button>
+                    <p id="encryptedResult" onclick='copytext("encryptedResult")'></p>
+                </div>
+            </div>
+<!-- Other Section -->
+            <div class="category-section" id="otherSection">
+                <div class="i1">
+                    <div class="item-name">Перевести деньги</div>
+                    <div class="quantity-control">
+                        <input type='number' min="0" id="pev" value="0">
+                        <input type="text" id="pev1" placeholder="С какой целью?">
+                    </div>
+                    <button class="pay-button" onclick='dep()'>Перевод</button>
+                </div>
+                
+                <div class="category-title">Кредитная система</div>
+                <div class="credit-section" style="padding:20px; border:1px solid #444; border-radius:8px; margin-bottom:20px;">
+                    <div id="activeCredits"></div>
+                    <div class="i1">
+                        <input type="number" id="loanAmount" placeholder="Сумма кредита (мин. 10,000₽, макс. 20,0000₽)" style="width:90%">
+                        <input type="number" id="loanTerm" placeholder="Срок (дни, макс. 2)" style="width:90%">
+                        <button class="pay-button" onclick="takeLoan()">Взять кредит</button>
+                    </div>
+                    <p id="loanError" style="color:#ff4444; margin-top:10px;"></p>
+                </div>
 
-<div>
-        <div class="category-title">Генератор промокодов</div>
-        <div class="promosgen">
-        <input type="number" id="value1" placeholder="Цена">
-        <input type="text" id="value2" placeholder="Получатель">
-        <p style='opacity: 0.6'>Учитывайте, что промокоды создаются за ваш счет<br>Оставьте поле с получателем пустым, что бы сделать промокод общим<br>Вы не можете получать свои же промокоды</p>
-        <button class='pay-button' onclick="encrypt()">Сгенерировать</button>
-        <p id="encryptedResult" onclick='copytext("encryptedResult")'></p>
+                <button class='pay-button delete' style='background-color: red;' onclick='deleteStrg()'>Удалить все сохранения</button>
+            </div>
+         
         </div>
-</div>
-</div>
-    <button class='pay-button' style='background-color: red;' onclick='deleteStrg()'>Удалить все сохранения</button>
 <script>
     
     function copytext(e) {
@@ -1324,7 +1412,57 @@ function deleteCompany(companyId) {
             }
         }
     </script>
+<div class="bottom-nav">
+    <div class="nav-item active" data-section="shopSection">🛒 Покупки</div>
+    <div class="nav-item" data-section="inventorySection">🎒 Инвентарь</div>
+    <div class="nav-item" data-section="companiesSection">🏢 Компании</div>
+    <div class="nav-item" data-section="happinessSection">😊 Счастье</div>
+    <div class="nav-item" data-section="promoSection">🎫 Промо</div>
+    <div class="nav-item" data-section="otherSection">⚙️ Прочее</div>
+</div></div>
+</div>
+<script>
+function showSection(sectionId) {
+    // Скрыть все секции
+    document.querySelectorAll('.category-section').forEach(section => {
+        section.classList.remove('active');
+    });
+    
+    // Показать выбранную секцию
+    const activeSection = document.getElementById(sectionId);
+    if(activeSection) {
+        activeSection.classList.add('active');
+        
+        switch(sectionId) {
+            case 'companiesSection':
+                updateCompanies();
+                break;
+            case 'happinessSection':
+                calculateHappiness();
+                break;
+        }
+    }
+    
+    // Обновить активные кнопки
+    document.querySelectorAll('.nav-item').forEach(item => {
+        const isActive = item.getAttribute('data-section') === sectionId;
+        item.classList.toggle('active', isActive);
+    });
+}
 
+// Инициализация обработчиков
+document.querySelectorAll('.nav-item').forEach(item => {
+    item.addEventListener('click', () => {
+        const sectionId = item.getAttribute('data-section');
+        showSection(sectionId);
+    });
+});
+
+// Показать первую секцию при загрузке
+document.addEventListener('DOMContentLoaded', () => {
+    showSection('shopSection');
+});
+</script>
 <script>
     
 const promos = {
@@ -1502,7 +1640,7 @@ function sendCash(cost, remain, bought) {
         let user;
 
         // Проверяем, если приложение не используется в Telegram Web App, создаём тестового пользователя
-        if (false) {
+        if (true) {
             //localStorage.setItem('userMoney', 5);
             user = {
                 first_name: "Пр<br>",
@@ -1797,11 +1935,11 @@ function calcpoints(inventory) {
 let taxr = 0;
 
 function taxes(profit) {
-    if (profit <= 0) return 0;
+    if (profit <= 30000) return 0;
     const BREAKPOINT = 700;
     const TARGET_PROFIT = 1000000000;
-    const MIN_RATE = 5;
-    const MAX_RATE = 99;
+    const MIN_RATE = 1;
+    const MAX_RATE = 70;
     const logProfit = Math.log10(profit);
     const logMin = Math.log10(BREAKPOINT);
     const logMax = Math.log10(TARGET_PROFIT);
@@ -1813,7 +1951,7 @@ function taxes(profit) {
     if(HAPPINESS.CURRENT < 25) {
         taxRate += 2;
     }
-    return Number((profit * (taxRate / 100)).toFixed(2));
+    return Number(Number((profit * (taxRate / 100)).toFixed(2)) * 0.65);
 }
 
 // Обновленная функция расчета
@@ -1827,13 +1965,13 @@ function calculate(inventoryText) {
         localStorage.setItem('lastVisitTime', currentTime.toISOString());
     } else {
         const lastVisit = new Date(lastVisitTime);
-        const timeDifference = Math.floor((currentTime - lastVisit) / (100 * 80));
+        const timeDifference = Math.floor((currentTime - lastVisit) / (100 * 80) * 1.35);
         
         if (timeDifference > 0) {
             for (const item of Object.keys(earningsPerMinute)) {
                 if (inventory[item]) {
                     const quantity = inventory[item];
-                    const perMinute = earningsPerMinute[item] || 0.5 / 100;
+                    const perMinute = earningsPerMinute[item] || 0.45 / 100;
                     totalEarnings += quantity * perMinute * timeDifference;
                 }
             }
@@ -1880,7 +2018,7 @@ function calculate(inventoryText) {
     const netProfit = totalEarnings - taxAmount;
 
     localStorage.setItem('lastVisitTime', currentTime.toISOString());
-    return Math.floor(netProfit); // Возвращаем только чистую прибыль
+    return Math.floor(netProfit); 
 }
 let inv_nonparsed = localStorage.getItem('inventory')
 let inv_parsed = calculate(inv_nonparsed)
@@ -1891,6 +2029,7 @@ if (inv_parsed > 0) {
     currentBalance += inv_parsed;
     localStorage.setItem('userMoney1', currentBalance);
 }
+localStorage.setItem('userMoney1', Math.max(0, localStorage.getItem('userMoney1')))
 remainingMoney = localStorage.getItem('userMoney1')
 document.getElementById('user-money').innerText = remainingMoney
 document.getElementById('armyb').innerText = armyballs;
