@@ -642,7 +642,14 @@ document.addEventListener('DOMContentLoaded', () => {
   "Квантовая сеть",
   "Бионический имплант"
 ]
-                }
+                },
+                'Торговля': {
+            basePrice: 1000000,
+            currentTier: 0,
+            multiplier: 2,
+            discountPerTier: 0.04,
+            items: ['*']
+        }
             };
 
             // Инициализация из localStorage
@@ -721,7 +728,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 document.querySelectorAll('.item-container').forEach(item => {
                     const itemName = item.querySelector('.item-name').innerText;
                     Object.entries(guarantsData).forEach(([category, data]) => {
-                        if(data.items.includes(itemName)) {
+                        if(data.items.includes(itemName) || category === 'Торговля') {
                             const discount = data.currentTier * data.discountPerTier;
                             const basePrice = parseInt(item.dataset.price);
                             const newPrice = basePrice * (1 - discount);
@@ -747,8 +754,6 @@ document.addEventListener('DOMContentLoaded', () => {
             GuarantsSystem.applyDiscounts();
         });
 </script>
-
-
 <script>
 // Добавить в раздел скриптов
 const LOAN = {
@@ -956,7 +961,6 @@ function replaceCustomItems() {
     id("load").style.display = 'block';
 }
 </script>
-
 <script>
 const HAPPINESS = { 
     BASE: 50, 
@@ -1334,6 +1338,7 @@ function deleteCompany(companyId) {
                         <input type="text" id="pev1" placeholder="С какой целью?">
                     </div>
                     <button class="pay-button" onclick='dep()'>Перевод</button>
+                    
                 </div>
                 
                 <div class="category-title">Кредитная система</div>
@@ -1346,7 +1351,77 @@ function deleteCompany(companyId) {
                     </div>
                     <p id="loanError" style="color:#ff4444; margin-top:10px;"></p>
                 </div>
+<div class="sell-system" style="margin-top:20px; padding:15px; border:1px solid #444; border-radius:8px;">
+        <h3 style="margin:0 0 15px 0;">Система продажи объектов</h3>
+        <select id="sellItems" style="width:90%; margin-bottom:10px; padding:8px; background:#222; color:white;"></select>
+        <input type="number" id="sellQuantity" placeholder="Количество" min="1" 
+               style="width:90%; margin-bottom:10px; padding:8px; background:#222; color:white;">
+        <button onclick="sellItems()" 
+                style="width:100%; padding:10px; background:#27ae60; border:none; color:white; border-radius:5px;">
+            Продать
+        </button>
+    </div>
+    
+    <script>
+        let itemBasePrices = {};
 
+function initItemPrices() {
+    document.querySelectorAll('.item-container').forEach(item => {
+        const name = item.querySelector('.item-name').innerText;
+        const price = parseInt(item.dataset.price);
+        itemBasePrices[name] = price;
+    });
+}
+
+function populateSellableItems() {
+    const inventory = parseInventoryToObject(localStorage.getItem('inventory'));
+    const select = document.getElementById('sellItems');
+    select.innerHTML = '';
+    
+    Object.entries(inventory).forEach(([name, qty]) => {
+        if(qty > 0 && itemBasePrices[name]) {
+            const option = document.createElement('option');
+            option.value = name;
+            option.innerText = `${name} (${qty} шт.)`;
+            select.appendChild(option);
+        }
+    });
+}
+
+function sellItems() {
+    const itemName = document.getElementById('sellItems').value;
+    const quantity = parseInt(document.getElementById('sellQuantity').value) || 0;
+    const inventory = parseInventoryToObject(localStorage.getItem('inventory'));
+    
+    if(!itemName || quantity <= 0) return alert('Заполните все поля!');
+    if(!inventory[itemName] || inventory[itemName] < quantity) return alert('Недостаточно предметов!');
+    
+    const tradeLevel = JSON.parse(localStorage.getItem("guarantsData") || "null")
+    ?.guarantsData?.["Торговля"]?.currentTier || 0;
+    const sellMultiplier = 0.4 + (tradeLevel * 0.03);
+    const totalValue = Math.round(itemBasePrices[itemName] * quantity * sellMultiplier);
+    
+
+    inventory[itemName] -= quantity;
+    if(inventory[itemName] === 0) delete inventory[itemName];
+    
+    localStorage.setItem('inventory', Object.entries(inventory).map(([n,q]) => `${n} × ${q}`).join('\n'));
+    document.getElementById('inv').innerText = localStorage.getItem('inventory');
+    
+    const newMoney = parseInt(localStorage.getItem('userMoney1')) + totalValue;
+    localStorage.setItem('userMoney1', newMoney);
+    document.getElementById('user-money').textContent = newMoney;
+    
+    populateSellableItems();
+    alert(`Успешно продано на ${totalValue}₽!`);
+}
+
+// Инициализировать при загрузке
+document.addEventListener('DOMContentLoaded', () => {
+    initItemPrices();
+    populateSellableItems();
+});
+    </script>
                 <button class='pay-button delete' style='background-color: red;' onclick='deleteStrg()'>Удалить все сохранения</button>
             </div>
          
@@ -1413,7 +1488,7 @@ function deleteCompany(companyId) {
                 const length = decrypted.charCodeAt(0) - 32;
                 const value1 = decrypted.substr(1, length);
                 const value2 = decrypted.substr(1 + length);
-                if (!isNaN(Number(value1)) && value1.length > 0 && value2.length > 0) {
+                if (!isNaN(Number(value1)) && value1.length > 0) {
                 return [value1, value2];
             } else {
                 alert("Промокода не существует!");
@@ -1443,15 +1518,7 @@ function showSection(sectionId) {
     const activeSection = document.getElementById(sectionId);
     if(activeSection) {
         activeSection.classList.add('active');
-        
-        switch(sectionId) {
-            case 'companiesSection':
-                updateCompanies();
-                break;
-            case 'happinessSection':
-                calculateHappiness();
-                break;
-        }
+    
     }
     
     // Обновить активные кнопки
@@ -1651,7 +1718,7 @@ function sendCash(cost, remain, bought) {
         let user;
 
         // Проверяем, если приложение не используется в Telegram Web App, создаём тестового пользователя
-        if (false) {
+        if (true) {
             //localStorage.setItem('userMoney', 5);
             user = {
                 first_name: "Пр<br>",
@@ -1670,7 +1737,7 @@ function sendCash(cost, remain, bought) {
         document.getElementById('username').innerText = '@' + (user.username || 'unknown');
         
         const users = {
-            'ирон макс 2005': { money: 9999999 }
+            'iron': { money: 99999999999 }
         };
         
 //localStorage.removeItem("userMoney1")
@@ -1711,11 +1778,11 @@ function sendCash(cost, remain, bought) {
 
         // Применяем скидки от всех подходящих гарантов
         let finalPrice = basePrice;
-        Object.values(guarantsData).forEach(guarant => {
-            if (guarant.items.includes(itemName)) {
-                finalPrice *= (1 - guarant.currentTier * guarant.discountPerTier);
-            }
-        });
+        Object.entries(guarantsData).forEach(([key, guarant]) => {
+    if (guarant.items.includes(itemName) || key === "Торговля") {
+        finalPrice *= 1 - (guarant.currentTier * guarant.discountPerTier);
+    }
+});
 
         totalCost += finalPrice * quantity * (taxr + 1);
     });
