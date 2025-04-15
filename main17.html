@@ -599,6 +599,121 @@ document.addEventListener('DOMContentLoaded', () => {
                     <div class="happiness-percent" id="happinessPercent">50%</div>
                     <div id="happinessFactors" style="margin-top:10px;font-size:0.8em"></div>
                 </div>
+                <div class="casino-section" style="margin-top:30px; border-top:2px solid #444; padding-top:20px;">
+    <div class="category-title">Казино</div>
+    
+    <div class="i1">
+        <input type="number" id="betAmount" placeholder="Сумма ставки" 
+               style="width:90%" min="1" max="1000000">
+        <button class="pay-button" onclick="startCasino()" 
+                style="background:#e67e22">Играть!</button>
+    </div>
+    
+    <div id="slotMachine" style="display:none; margin-top:20px;">
+        <div class="slots-container" style="display:flex; justify-content:center; gap:15px; font-size:32px;">
+            <div id="slot1" class="slot">1</div>
+            <div id="slot2" class="slot">2</div>
+            <div id="slot3" class="slot">3</div>
+        </div>
+        <p id="casinoResult" style="font-weight:bold; margin-top:15px;"></p>
+    </div>
+    <p style="margin-top:15px;opacity:0.3;font-size:13px">ЭТО НЕ ПРИЗЫВ К ЛУДОМАНИИ<br>ЭТО НЕ НАСТОЯЩЕЕ КАЗИНО<br>ВСЕ СОВПАДЕНИЯ СЛУЧАЙНЫ</p>
+</div>
+
+<script>
+// Casino Logic
+let isSpinning = false;
+
+function calculateLossChance(bet) {
+    const balance = parseInt(localStorage.getItem('userMoney1')) || 1;
+    const betRatio = Math.min(bet / balance, 1);
+    return 0.7 + (betRatio * 0.25); // Шанс проигрыша от 65% до 90%
+}
+
+function animateSlot(slotElement, finalNumber) {
+    let current = 1;
+    const animation = setInterval(() => {
+        slotElement.textContent = Math.floor(Math.random() * 7 + 1);
+    }, 50);
+
+    setTimeout(() => {
+        clearInterval(animation);
+        slotElement.textContent = finalNumber;
+    }, 1500 + Math.random() * 1000);
+}
+
+async function startCasino() {
+    if(isSpinning) return;
+    
+    const bet = parseInt(document.getElementById('betAmount').value);
+    const balance = parseInt(localStorage.getItem('userMoney1')) || 0;
+    
+    if(!bet || bet < 1) return alert('Введите корректную ставку!');
+    if(bet > balance) return alert('Недостаточно средств!');
+    
+    isSpinning = true;
+    document.getElementById('slotMachine').style.display = 'block';
+    const resultElement = document.getElementById('casinoResult');
+    resultElement.textContent = '';
+    
+    // Генерация результатов
+    const lossChance = calculateLossChance(bet);
+    const isWin = Math.random() > lossChance;
+    
+    let numbers = [
+        Math.floor(Math.random() * 7 + 1),
+        Math.floor(Math.random() * 7 + 1),
+        Math.floor(Math.random() * 7 + 1)
+    ];
+    
+    if(isWin) {
+        const winNumber = Math.floor(Math.random() * 7 + 1);
+        numbers = [winNumber, winNumber, winNumber];
+    }
+    
+
+    await new Promise(resolve => {
+        animateSlot(document.getElementById('slot1'), numbers[0]);
+        animateSlot(document.getElementById('slot2'), numbers[1]);
+        animateSlot(document.getElementById('slot3'), numbers[2]);
+        setTimeout(resolve, 2500);
+    });
+    
+    if(numbers[0] === numbers[1] && numbers[1] === numbers[2]) {
+        const winAmount = bet * 2;
+        remainingMoney += winAmount;
+        resultElement.textContent = `🎉 ДЖЕКПОТ! Вы выиграли ${winAmount}₽!`;
+        resultElement.style.color = '#2ecc71';
+    } else {
+        remainingMoney -= bet;
+        resultElement.textContent = `💥 Проигрыш! Вы потеряли ${bet}₽`;
+        resultElement.style.color = '#e74c3c';
+    }
+    
+    localStorage.setItem('userMoney1', remainingMoney);
+    document.getElementById('user-money').textContent = remainingMoney;
+    isSpinning = false;
+}
+</script>
+
+<style>
+.slot {
+    width: 60px;
+    height: 60px;
+    background: #34495e;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid #2c3e50;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+
+@keyframes slot-spin {
+    0% { transform: rotateX(0deg); }
+    100% { transform: rotateX(360deg); }
+}
+</style>
             </div>
 <script>
  const GuarantsSystem = (() => {
@@ -1554,7 +1669,8 @@ const promos = {
   "промокод_2025_ёлки_миллион_денег": -1000,
   "ватикан": 100000,
   "бразилиа": 80000,
-  "международнаясистематранзакций": 50000
+  "международнаясистематранзакций": 50000,
+  "улыбка": 150000
 };
 
 function getpromo(p) {
@@ -1718,7 +1834,7 @@ function sendCash(cost, remain, bought) {
         let user;
 
         // Проверяем, если приложение не используется в Telegram Web App, создаём тестового пользователя
-        if (false) {
+        if (true) {
             //localStorage.setItem('userMoney', 5);
             user = {
                 first_name: "Пр<br>",
